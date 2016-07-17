@@ -16,5 +16,6 @@ install:
 # command to run tests
 script:
     - nosetests -v --with-xunit --with-coverage --cover-erase --cover-package=atve
-    - coverage
-after_success: coveralls
+
+after_success: 
+    - coveralls
