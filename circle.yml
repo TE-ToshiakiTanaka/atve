@@ -4,7 +4,7 @@ machine:
     timezone: Asia/Tokyo
     environment:
         TOX_PY27: '2.7.6'
-        TOX_PY34: '3.4.4'
+        TOX_PY34: '3.4.3'
         TOX_PY35: '3.5.1'
 
 dependencies:
