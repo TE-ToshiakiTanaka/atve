@@ -1,0 +1,90 @@
+import os
+import sys
+import time
+import errno
+import threading
+import subprocess
+
+from atve import STRING_SET
+from atve import PYTHON_VERSION
+from atve.exception import *
+
+class ThreadWithReturn(threading.Thread):
+    def __init__(self, *args, **kwargs):
+        super(ThreadWithReturn, self).__init__(*args, **kwargs)
+        self._return = None
+
+    def run(self):
+        if self._Thread__target is not None:
+            self._return = self._Thread__target(*self._Thread__args, **self._Thread__kwargs)
+
+    def join(self, timeout=None):
+        super(ThreadWithReturn, self).join(timeout=timeout)
+        return self._return
+
+def run(cmd, cwd=None, timeout=60, debug=False):
+    if type(cmd) in STRING_SET:
+        cmd = [c for c in cmd.split() if c != '']
+    if debug:
+        sys.stderr.write(''.join(cmd) + '\n')
+        sys.stderr.flush()
+
+    try:
+        if PYTHON_VERSION == 2:
+            proc = subprocess.Popen(cmd,
+                                    cwd     = cwd,
+                                    stdout  = subprocess.PIPE,
+                                    stderr  = subprocess.PIPE)
+            proc_thread = ThreadWithReturn(target=proc.communicate)
+            proc_thread.start()
+            result = proc_thread.join(timeout)
+            if proc_thread.is_alive():
+                try:
+                    proc.kill()
+                except OSError as e:
+                    out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
+                    raise RunError(cmd, None, message='Raise Exception : %s' % out)
+                raise TimeoutError({
+                    'cmd'       : cmd,
+                    'out'       : None,
+                    'message'   : 'command %s is time out' % cmd
+                })
+            returncode = proc.returncode
+            if result == None:
+                out = None; err = None;
+            else:
+                out = result[0]; err = result[1]
+        else:
+            try:
+                proc2 = subprocess.Popen(cmd,
+                                         cwd     = cwd,
+                                         stdout  = subprocess.PIPE,
+                                         stderr  = subprocess.PIPE)
+                out, err = proc2.communicate(timeout=timeout)
+                returncode = proc2.returncode
+            except FileNotFoundError as e:
+                out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
+                raise RunError(cmd, None, message='Raise Exception : %s' % out)
+            except Exception as e:
+                if proc2 != None: proc2.kill()
+                out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
+                raise TimeoutError({
+                    'cmd'       : cmd,
+                    'out'       : None,
+                    'message'   : 'command %s is time out' % cmd
+                })
+
+    except OSError as e:
+        out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
+        raise RunError(cmd, None, message='Raise Exception : %s' % out)
+
+    except RuntimeError as e:
+        out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
+        raise RunError(cmd, None, message='Raise Exception : %s' % out)
+    try:
+        if isinstance(out, bytes): out = out.decode("utf8")
+        if isinstance(err, bytes): err = err.decode("utf8")
+    except UnicodeDecodeError as e:
+        out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
+        sys.stderr.write(out)
+    return (returncode, out, err)
