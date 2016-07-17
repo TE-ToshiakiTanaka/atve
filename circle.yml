@@ -1,0 +1,23 @@
+machine:
+    python:
+        version: '2.7.10'
+    timezone: Asia/Tokyo
+    environment:
+        TOX_PY26: '2.6.6'
+        TOX_PY27: '2.7.11'
+        TOX_PY34: '3.4.3'
+        TOX_PY35: '3.5.1'
+
+dependencies:
+    pre:
+        - pip -V
+        - pip install -U -r requirements.txt
+        - pyenv local $TOX_PY26 $TOX_PY27 $TOX_PY34 $TOX_PY35
+test:
+    override:
+        - tox -v
+    post:
+        - mkdir -p $CIRCLE_TEST_REPORTS/nose/
+        - mv nosetests.xml $CIRCLE_TEST_REPORTS/nose/
+        - mv dist $CIRCLE_ARTIFACTS
+        - mv cover $CIRCLE_ARTIFACTS
