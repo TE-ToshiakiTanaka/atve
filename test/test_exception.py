@@ -12,7 +12,7 @@ def test_exception_error_01():
     try: raise AtveError()
     except AtveError as a: fail()
     except TypeError as t:
-        ok_()
+        ok_(True)
 
 @with_setup(setup, teardown)
 def test_exception_error_02():
