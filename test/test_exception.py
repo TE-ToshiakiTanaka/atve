@@ -12,7 +12,7 @@ def test_exception_error_01():
     try: raise AtveError()
     except AtveError as a: fail()
     except TypeError as t:
-        eq_(str(t), "__init__() missing 1 required positional argument: 'details'")
+        ok_()
 
 @with_setup(setup, teardown)
 def test_exception_error_02():
