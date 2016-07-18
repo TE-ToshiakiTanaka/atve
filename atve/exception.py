@@ -24,7 +24,7 @@ class AtveError(Exception):
         if trace:
             trace = trae.encode('utf8')
             return '%s\n Server side traceback:\n%s' % (message, trace)
-        return message
+        return str(message)
 
     def __getattr__(self, attribute):
         return self.details[attribute]
