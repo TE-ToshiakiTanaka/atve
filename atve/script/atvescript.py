@@ -1,12 +1,10 @@
 import os
 import sys
-try : import importlib
-except: import imp
 import time
 import argparse
 import unittest
+import importlib
 
-from atve import PYTHON_VERSION
 from atve.log import LOG as L
 from atve.exception import *
 
@@ -34,11 +32,7 @@ class AtveTestCase(unittest.TestCase):
                     pass
                 else:
                     sys.path.append(os.path.join(host, fdn))
-                    if PYTHON_VERSION == 2:
-                        f, n, d = imp.find_module("service")
-                        module = imp.load_module("service", f, n, d)
-                    else:
-                        module = importlib.import_module("service")
+                    module = importlib.import_module("service")
                     cls.service[module.NAME] = module.FACTORY
                     sys.path.remove(os.path.join(host, fdn))
             except Exception as e:
