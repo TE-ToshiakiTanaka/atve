@@ -1,10 +1,12 @@
 import os
 import sys
-import imp
+try : import importlib
+except: import imp
 import csv
 import unittest
 import xmlrunner
 
+from atve import PYTHON_VERSION
 from atve.log import LOG as L
 from atve.exception import *
 
@@ -24,8 +26,11 @@ class AtveTestRunner(object):
         L.debug("TestCase : %s" % path)
         try:
             if os.path.exists(path):
-                f, n, d = imp.find_module(str(name))
-                return imp.load_module(name, f, n, d)
+                if PYTHON_VERSION == 2:
+                    f, n, d = imp.find_module(str(name))
+                    return imp.load_module(name, f, n, d)
+                else:
+                    return importlib.import_module(str(name))
             else:
                 return False
         except ImportError as e:
