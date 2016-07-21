@@ -24,19 +24,17 @@ class AtveTestCase(unittest.TestCase):
 
     @classmethod
     def register(cls, host):
+        sys.path.append(SYSTEM_LIBRARY)
         if not os.path.exists(host):
             raise LibraryError("%s is not exists." % (host))
         for fdn in os.listdir(host):
             try:
-                if fdn.endswith(".pyc") or fdn.endswith(".py"):
+                if fdn.endswith(".pyc") or fdn.endswith(".py") or fdn.endswith("__pycache__"):
                     pass
                 else:
-                    sys.path.append(os.path.join(host, fdn))
-                    module = importlib.import_module("service")
+                    module = importlib.import_module(fdn + ".service")
                     cls.service[module.NAME] = module.FACTORY
-                    sys.path.remove(os.path.join(host, fdn))
             except Exception as e:
-                sys.path.remove(os.path.join(host, fdn))
                 L.warning(type(e).__name__ + ": " + str(e))
 
 
