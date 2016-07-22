@@ -11,7 +11,7 @@ DRIVER_PATH = os.path.abspath(os.path.join(
 from atve.log import Log
 from atve.exception import *
 
-DEFAULT_WAIT = 30
+DEFAULT_WAIT = 60
 WINDOW_SIZE_WIDTH = 1280
 WINDOW_SIZE_HEIGHT = 800
 L = Log("Browser.Library.ATVE")
