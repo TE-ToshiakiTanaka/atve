@@ -20,7 +20,13 @@ class TestCase(AtveTestCase):
             b = self.service["atve.browser"].get("FireFox")
             self.assertTrue(b != None)
             b.start(self.get("browser.url"))
-            self.assertTrue(b.find_element_by_id("hplogo") != None)
+            b.find_element_by_id("lst-ib").send_keys("atve")
+            b.find_element_by_name("btnK").click()
+            time.sleep(5)
+            self.assertTrue(self.get("system.tmp") != None)
+            b.screenshot(self.get("system.tmp"));
+            self.assertTrue(os.path.exists(
+                os.path.join(self.get("system.tmp"), "screen.png")))
         except Exception as e:
             L.warning(str(e))
         finally:
