@@ -26,8 +26,6 @@ class TestCase(AtveTestCase):
             L.warning(str(e))
         except Exception as e:
             self.assertTrue(False)
-        finally:
-            b.quit()
 
     @classmethod
     def tearDownClass(cls):
