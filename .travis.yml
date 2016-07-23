@@ -1,3 +1,12 @@
+sudo: false
+addons:
+  apt:
+      sources:
+          - sourceline: 'deb http://dl.google.com/linux/chrome/deb/ stable main'
+            key_url: 'https://dl-ssl.google.com/linux/linux_signing_key.pub'
+      packages:
+          - xvfb
+          - google-chrome-stable
 language: python
 python:
     - "2.7"
@@ -8,12 +17,6 @@ python:
     - "pypy"
 
 before_install:
-    - sudo apt-get update
-    - sudo apt-get install --assume-yes fonts-liberation libappindicator1
-    - wget -O /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    - sudo dpkg -i /tmp/chrome.deb
-    - sudo apt-get install xvfb
-    - export CHROME_BIN=google-chrome-stable
     - export DISPLAY=':99.0'
     - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
