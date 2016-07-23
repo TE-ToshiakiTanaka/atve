@@ -4,8 +4,10 @@ addons:
       sources:
           - google-chrome
       packages:
+          #- g++-4.8
+          #- libc++-dev
           - xvfb
-          - google-chrome-stable
+          - chromium-browser
 language: python
 python:
     - "2.7"
