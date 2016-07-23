@@ -18,6 +18,7 @@ class TestAtveTestRunner(object):
         cls.workspace = Workspace(os.path.join(cls.root, "workspace"))
         cls.report_path = cls.workspace.mkdir("report")
         cls.tmp_path = cls.workspace.mkdir("tmp")
+        cls.bin_path = os.path.join(cls.root, "data", "bin")
         cls.ref_path = os.path.join(cls.root, "data", "ref")
 
     @classmethod

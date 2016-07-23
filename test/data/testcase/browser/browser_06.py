@@ -20,8 +20,8 @@ class TestCase(AtveTestCase):
             b = self.service["atve.browser"].get("FireFox")
             self.assertTrue(b != None)
             b.start(self.get("browser.url"))
-            b.find_element_by_id("lst-ib").send_keys("atve")
-            b.find_element_by_name("btnK").click()
+            b.find_element_by_name("q").send_keys("atve")
+            b.find_element_by_name("q").submit()
             time.sleep(5)
             self.assertTrue(b.find_element_by_class("sfibbbc") != None)
         except Exception as e:

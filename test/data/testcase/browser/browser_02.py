@@ -17,7 +17,8 @@ class TestCase(AtveTestCase):
     def test(self):
         self.assertTrue("atve.browser" in self.service.keys())
         self.assertTrue(self.service["atve.browser"].version() != None)
-        L.info(self.service["atve.browser"].version())
+        sel = self.service["atve.browser"].get("FireFox")
+        self.assertTrue(sel != None)
 
     @classmethod
     def tearDownClass(cls):
