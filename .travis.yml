@@ -1,12 +1,12 @@
 sudo: false
 addons:
   apt:
-      # sources:
-      #   - sourceline: 'deb http://dl.google.com/linux/chrome/deb/ stable main'
-      #     key_url: 'https://dl-ssl.google.com/linux/linux_signing_key.pub'
+      sources:
+          - sourceline: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
+            key_url: 'https://dl-ssl.google.com/linux/linux_signing_key.pub'
       packages:
           - xvfb
-          - google-chrome
+          - google-chrome-stable
 language: python
 python:
     - "2.7"
