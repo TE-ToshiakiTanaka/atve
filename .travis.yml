@@ -8,10 +8,12 @@ python:
     - "pypy"
 
 before_install:
-    - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    - sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
     - sudo apt-get update
-    - sudo apt-get install google-chrome-stable xvfb
+    - sudo apt-get install --assume-yes fonts-liberation libappindicator1
+    - wget -O /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - sudo dpkg -i /tmp/chrome.deb
+    - sudo apt-get install xvfb
+    - export CHROME_BIN=google-chrome-stable
     - export DISPLAY=':99.0'
     - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
