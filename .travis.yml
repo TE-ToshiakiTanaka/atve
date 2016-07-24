@@ -7,6 +7,8 @@ addons:
       packages:
           - xvfb
           - google-chrome-stable
+          - python-numpy
+          - python-opencv
 language: python
 python:
     - "2.7"
