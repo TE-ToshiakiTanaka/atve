@@ -4,12 +4,11 @@ import time
 import argparse
 import unittest
 import importlib
+import traceback
 
 from atve.log import LOG as L
+from atve.define import *
 from atve.exception import *
-
-SYSTEM_LIBRARY = os.path.normpath(os.path.join(
-    os.path.dirname(os.path.dirname(__file__)), "library"))
 
 
 class AtveTestCase(unittest.TestCase):
@@ -19,23 +18,29 @@ class AtveTestCase(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         global service
         super(AtveTestCase, self).__init__(*args, **kwargs)
-        self.register(SYSTEM_LIBRARY)
+        self.register(ATVE_LIB)
         self.__parse()
 
     @classmethod
     def register(cls, host):
-        sys.path.append(SYSTEM_LIBRARY)
+        sys.path.append(host)
         if not os.path.exists(host):
             raise LibraryError("%s is not exists." % (host))
         for fdn in os.listdir(host):
             try:
-                if fdn.endswith(".pyc") or fdn.endswith(".py") or fdn.endswith("__pycache__"):
+                if fdn.endswith(".pyc") or fdn.endswith(".py"):
+                    pass
+                elif fdn.endswith("__pycache__"):
                     pass
                 else:
-                    module = importlib.import_module(fdn + ".service")
+                    package_path = os.path.join(host, fdn).split("\\")[len(ATVE_ROOT.split("\\")) - 1:]
+                    package = ".".join(package_path)
+                    module = importlib.import_module(".service", package)
                     cls.service[module.NAME] = module.FACTORY
             except Exception as e:
+                L.warning(traceback.print_exc())
                 L.warning(type(e).__name__ + ": " + str(e))
+        print(cls.service)
 
 
     @classmethod

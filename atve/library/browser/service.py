@@ -19,6 +19,5 @@ class Factory(object):
     def get(self, mode="FireFox"):
         return Selenium(mode)
 
-
 NAME = "atve.browser"
 FACTORY = Factory()

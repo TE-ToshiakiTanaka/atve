@@ -9,5 +9,5 @@ class Factory(object):
         return True
 
 
-NAME = "core"
+NAME = "atve.core"
 FACTORY = Factory()
