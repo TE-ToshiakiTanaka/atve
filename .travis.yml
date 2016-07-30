@@ -1,14 +1,14 @@
 sudo: required
 dist: trusty
 addons:
-apt:
-   sources:
-        - google-chrome
-    packages:
-        - xvfb
-        - google-chrome-stable
-        - python-numpy
-        - python-opencv
+    apt:
+       sources:
+            - google-chrome
+        packages:
+            - xvfb
+            - google-chrome-stable
+            - python-numpy
+            - python-opencv
 language: python
 python:
  - "2.7"
