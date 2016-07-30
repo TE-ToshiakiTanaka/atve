@@ -33,11 +33,15 @@ class AtveTestCase(unittest.TestCase):
                 elif fdn.endswith("__pycache__"):
                     pass
                 else:
-                    package_path = os.path.join(host, fdn).split("\\")[len(ATVE_ROOT.split("\\")) - 1:]
-                    package = ".".join(package_path)
-                    module = importlib.import_module(".service", package)
+                    #sys.path.append(os.path.join(host, fdn))
+                    #package_path = os.path.join(host, fdn).split("\\")[len(ATVE_ROOT.split("\\")) - 1:]
+                    #package = ".".join(package_path)
+                    #module = importlib.import_module(".service", package)
+                    module = importlib.import_module("%s.service" % fdn)
                     cls.service[module.NAME] = module.FACTORY
+                    #sys.path.remove(os.path.join(host, fdn))
             except Exception as e:
+                #sys.path.remove(os.path.join(host, fdn))
                 L.warning(traceback.print_exc())
                 L.warning(type(e).__name__ + ": " + str(e))
         print(cls.service)
