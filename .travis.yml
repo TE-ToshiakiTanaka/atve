@@ -1,21 +1,33 @@
-sudo: false
+sudo: required
+dist: trusty
+addons:
+apt:
+   sources:
+        - google-chrome
+    packages:
+        - xvfb
+        - google-chrome-stable
+        - python-numpy
+        - python-opencv
 language: python
 python:
-    - "2.7"
-    - "3.4"
-    - "3.5"
-    # does not have headers provided, please ask https://launchpad.net/~pypy/+archive/ppa
-    # maintainers to fix their pypy-dev package.
-    - "pypy"
+ - "2.7"
+ - "3.4"
+ - "3.5"
+ # does not have headers provided, please ask https://launchpad.net/~pypy/+archive/ppa
+ # maintainers to fix their pypy-dev package.
+ - "pypy"
+
+before_install:
+ - export DISPLAY=':99.0'
+ - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+
 
 # command to install dependencies
 install:
-    # - pip install .
-    - pip install -r requirements-travis.txt
+ # - pip install .
+ - pip install -r requirements.txt
 
 # command to run tests
 script:
-    - nosetests -v test/test_* --with-xunit --with-coverage --cover-erase --cover-package=atve
-
-after_success:
-    - coveralls
+ - nosetests -v --with-xunit --with-coverage --cover-erase --cover-package=atve
