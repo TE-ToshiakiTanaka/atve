@@ -229,8 +229,8 @@ class AndroidUiAutomator(object):
             L.warning(result[2].replace("\n",""))
             raise AndroidError("Android UiAutomator Binary for Stve Build Failed.")
 
-    def push(self, jar, path):
-        result = self._adb.push(jar, path)
+    def push(self, jar):
+        result = self._adb.push(jar, UIAUTOMATOR_PATH)
         return result
 
     def execute(self, jar, exe, bundle, timeout=UIAUTOMATOR_TIMEOUT):
