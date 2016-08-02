@@ -32,7 +32,7 @@ class POINT(object):
             % (self.x, self.y, self.width, self.height)
 
 class Picture(object):
-    L = Log("Picture.Library.STVE")
+    L = Log("Picture.Library.ATVE")
 
     @classmethod
     def exists(cls, filename):

@@ -31,7 +31,6 @@ class Selenium(object):
     @classmethod
     def start(cls, url, driver=""):
         if cls.mode == "FireFox":
-
             default_profile = {
                 'browser.usedOnWindows10': False,
                 'browser.usedOnWindows10.introURL': 'https://www.google.com/',
@@ -42,7 +41,6 @@ class Selenium(object):
             for name, value in default_profile.items():
                 profile.set_preference(name, value)
             cls.driver = webdriver.Firefox(profile)
-            #cls.driver = webdriver.Firefox()
 
         elif cls.mode == "Chrome":
             try:
