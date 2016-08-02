@@ -19,7 +19,7 @@ UIAUTOMATOR_PATH = "/data/local/tmp/"
 
 ADB_ROOT = os.path.normpath(os.path.dirname(__file__))
 
-L = Log("Android.Library.STVE")
+L = Log("Android.Library.ATVE")
 
 class AndroidBase(object):
     def __init__(self, profile, host=PROFILE_PATH):
@@ -280,6 +280,12 @@ class Android(object):
             :return string: adb result.
         """
         return self._uiautomator.execute(jar, exe, bundle)
+
+    def snapshot(self, filename, host):
+        self._adb.shell("screencap -p /sdcard/%s" % (filename))
+        self._adb.pull("/sdcard/%s %s" % (filename, host))
+        self._adb.shell("rm /sdcard/%s" % (filename))
+        return os.path.join(host, filename)
 
 if __name__ == '__main__':
     a = Android("YT9111NUXX")

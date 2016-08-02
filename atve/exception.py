@@ -123,3 +123,11 @@ class PictureError(AtveError):
                 'message' : details
             }
         AtveError.__init__(self, details)
+
+class AndroidError(AtveError):
+    def __init__(self, details):
+        if type(details) in STRING_SET:
+            details = {
+                'message' : details
+            }
+        AtveError.__init__(self, details)

@@ -20,6 +20,7 @@ class TestRunner(object):
         self.runner = AtveTestRunner()
         self.workspace = Workspace(WORK_DIR)
 
+        self.lib = self.workspace.mkdir("lib")
         self.tmp = self.workspace.mkdir("tmp")
         self.log = self.workspace.mkdir("log")
         self.report = self.workspace.mkdir("report")

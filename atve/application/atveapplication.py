@@ -4,6 +4,7 @@ import csv
 import unittest
 import importlib
 import xmlrunner
+import traceback
 
 from atve.log import LOG as L
 from atve.exception import *
@@ -24,11 +25,12 @@ class AtveTestRunner(object):
         L.debug("TestCase : %s" % path)
         try:
             if os.path.exists(path):
-                return importlib.import_module(str(name))
+                return importlib.import_module(name)
             else:
                 return False
         except ImportError as e:
-            L.traceback()
+            L.warning(traceback.print_exc())
+            L.warning(type(e).__name__ + ": " + str(e))
             return False
 
     def execute(self, script, host, v=2):
@@ -39,6 +41,7 @@ class AtveTestRunner(object):
         suite = unittest.TestSuite()
         loader = unittest.TestLoader()
         module = self.load(script, host)
+        print("Module Name : " + str(module))
         if not module:
             L.warning("Not loaded module : %s" % script)
             raise TestRunnerError("%s is not extended AtveTestCase." % script)
