@@ -1,8 +1,8 @@
 import os
 import sys
-import imp
 import time
 import glob
+import importlib
 
 PROFILE_PATH = os.path.abspath(os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "profile"))
@@ -18,8 +18,6 @@ UIAUTOMATOR_TIMEOUT = 180
 UIAUTOMATOR_PATH = "/data/local/tmp/"
 
 ADB_ROOT = os.path.normpath(os.path.dirname(__file__))
-ADB_APK_AURA = os.path.join(ADB_ROOT, "apk", "aura")
-ADB_JAR_AUBS = os.path.join(ADB_ROOT, "jar", "aubs")
 
 L = Log("Android.Library.STVE")
 
@@ -46,8 +44,7 @@ class AndroidBase(object):
                 for fdn in os.listdir(PROFILE_PATH):
                     if fdn.endswith("_0000000000000000.py"):
                         prof = fdn.replace(".py", "")
-            f, n, d = imp.find_module(str(prof))
-            module = imp.load_module(prof, f, n, d)
+            module = importlib.import_module(str(prof))
             self.profile = getattr(module, class_name)
             self.profile.SERIAL = name
             self.profile.TMP_PICTURE = "%s_TMP.png" % name

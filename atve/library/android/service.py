@@ -20,5 +20,5 @@ class Factory(object):
         return Android(serial, host)
 
 
-NAME = "stvex.android"
+NAME = "atve.android"
 FACTORY = Factory()

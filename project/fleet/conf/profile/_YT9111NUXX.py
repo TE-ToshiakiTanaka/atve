@@ -3,11 +3,11 @@ import sys
 
 from android_base import Android
 
-class _0000000000000000(Android):
-    SERIAL = "0000000000000000"
+class _YT9111NUXX(Android):
+    SERIAL = "YT9111NUXX"
     TMP_PICTURE="%s_TMP.png" % SERIAL
     IP = ""
     PORT = ""
 
 if __name__ == "__main__":
-    print(eval("_0000000000000000.%s" % "TMP_PICTURE"))
+    print(eval("_YT9111NUXX.%s" % "TMP_PICTURE"))
