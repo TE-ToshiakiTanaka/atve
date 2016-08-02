@@ -21,13 +21,14 @@ python:
 before_install:
     - export DISPLAY=':99.0'
     - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-    - chmod +x opencv_install.sh
+    - chmod +x opencv_install.sh opencv_setup.sh
     - ./opencv_install.sh
+    - ./opencv_setup.sh
 
 # command to install dependencies
 install:
     # - pip install .
-    - pip install -r requirements-travis.txt
+    - pip install -r requirements.txt
 
 # command to run tests
 script:
