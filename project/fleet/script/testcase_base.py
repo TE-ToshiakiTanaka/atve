@@ -21,6 +21,10 @@ class TestCase_Unit(AtveTestCase):
                             help='TestCase Name.')
         parser.add_argument('-m', action='store', dest='mobile',
                             help='Mobile (Android) Serial ID.')
+        parser.add_argument('-f', action='store', dest='fleet',
+                            help='Fleet Number. (1 ~ 4)')
+        parser.add_argument('-e', action='store', dest='expedition',
+                            help='Expedition ID.')
         return parser
 
     @classmethod

@@ -84,8 +84,12 @@ def run(cmd, cwd=None, timeout=60, debug=False, shell=False):
         out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
         raise RunError(cmd, None, message='Raise Exception : %s' % out)
     try:
-        if isinstance(out, bytes): out = str(out.decode(sys.stdin.encoding))
-        if isinstance(err, bytes): err = str(err.decode(sys.stdin.encoding))
+        if PYTHON_VERSION == 2:
+            if isinstance(out, bytes): out = out.decode("utf8")
+            if isinstance(err, bytes): err = err.decode("utf8")
+        else:
+            if isinstance(out, bytes): out = str(out.decode(sys.stdin.encoding))
+            if isinstance(err, bytes): err = str(err.decode(sys.stdin.encoding))
     except UnicodeDecodeError as e:
         out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
         sys.stderr.write(out)

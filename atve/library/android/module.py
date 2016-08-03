@@ -294,7 +294,7 @@ class Android(object):
         return self._adb.shell(cmd)
 
     def tap(self, x, y):
-        cmd = "tap %d, %d" % (x, y)
+        cmd = "tap %d %d" % (x, y)
         return self.input(cmd)
 
     def invoke(self, app):
