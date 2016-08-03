@@ -44,15 +44,17 @@ class AndroidBase(object):
                 for fdn in os.listdir(PROFILE_PATH):
                     if fdn.endswith("_0000000000000000.py"):
                         prof = fdn.replace(".py", "")
+            sys.path.append(host)
             module = importlib.import_module(str(prof))
             self.profile = getattr(module, class_name)
             self.profile.SERIAL = name
             self.profile.TMP_PICTURE = "%s_TMP.png" % name
+            sys.path.remove(host)
         except Exception as e:
+            sys.path.remove(host)
             L.debug('=== Error Exception ===')
             L.debug('type     : ' + str(type(e)))
             L.debug('args     : ' + str(e.args))
-            L.debug('message  : ' + e.message)
             L.debug('e        : ' + str(e))
             raise AndroidError(str(e))
 
@@ -270,7 +272,60 @@ class Android(object):
         self._adb.shell("rm /sdcard/%s" % (filename))
         return os.path.join(host, filename)
 
+    def start(self, intent):
+        return self._adb.shell("am start -n %s" % (intent))
+
+    def push(self, src, dst):
+        return self._adb.push(src, dst)
+
+    def pull(self, src, dst):
+        return self._adb.pull(src, dst)
+
+    def input(self, cmd):
+        if "input" in cmd:
+            L.debug("command include [input]. : %s" % cmd)
+        cmd = "input %s" % cmd
+        return self._adb.shell(cmd)
+
+    def am(self, cmd):
+        if "am" in cmd:
+            L.debug("command include [am]. : %s" % cmd)
+        cmd = "am %s" % cmd
+        return self._adb.shell(cmd)
+
+    def tap(self, x, y):
+        cmd = "tap %d, %d" % (x, y)
+        return self.input(cmd)
+
+    def invoke(self, app):
+        cmd = "start -n %s" % (app)
+        return self.am(cmd)
+
+    def keyevent(self, code):
+        cmd = "keyevent %s " % (code)
+        return self.input(cmd)
+
+    def text(self, cmd):
+        args = cmd.split(" ")
+        for arg in args:
+            self._text(arg)
+            self.keyevent(self.get().KEYCODE_SPACE)
+
+    def _text(self, cmd):
+        if "text" in cmd:
+            L.debug("command include [text]. : %s" % cmd)
+        cmd = "text %s" % cmd
+        return self.input(cmd)
+
+    def stop(self, app):
+        package = app.split("/")[0]
+        cmd = "force-stop %s " % (package)
+        return self.am(cmd)
+
 if __name__ == '__main__':
     a = Android("YT9111NUXX")
     print(a.get().SERIAL)
+    a.invoke("com.dmm.dmmlabo.kancolle/.AppEntry")
+    time.sleep(10)
+    a.stop("com.dmm.dmmlabo.kancolle/.AppEntry")
     #print a.exec_application(a.get().AURA_DEBUGON, {})

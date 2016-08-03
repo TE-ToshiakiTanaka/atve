@@ -5,6 +5,7 @@ class Android:
     KEYCODE_LEFT = "KEYCODE_DPAD_LEFT"
     KEYCODE_DOWN = "KEYCODE_DPAD_DOWN"
     KEYCODE_UP = "KEYCODE_DPAD_UP"
+    KEYCODE_SPACE = "KEYCODE_SPACE"
 
     # adb get property
     PROP_LANGUAGE = "persist.sys.language"
@@ -27,7 +28,7 @@ class Android:
     # AUBS Method
     AUBS = "jp.setsulla.stve.aubs.Aubs"
 
-    AUBS_SYSTEM_ALLOWAPP = "jp.setsulla.stve.aubs.system.AndroidTest#testAllowSettingsApp"
+    AUBS_SYSTEM_ALLOWAPP = "jp.setsulla.atve.aubs.system.AndroidTest#testAllowSettingsApp"
 
     # AURA Service
     AURA_PACKAGE = "jp.setsulla.stve.aura"

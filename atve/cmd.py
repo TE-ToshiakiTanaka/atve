@@ -22,7 +22,7 @@ class ThreadWithReturn(threading.Thread):
         super(ThreadWithReturn, self).join(timeout=timeout)
         return self._return
 
-def run(cmd, cwd=None, timeout=60, debug=False):
+def run(cmd, cwd=None, timeout=60, debug=False, shell=False):
     if type(cmd) in STRING_SET:
         cmd = [c for c in cmd.split() if c != '']
     if debug:
@@ -34,7 +34,8 @@ def run(cmd, cwd=None, timeout=60, debug=False):
             proc = subprocess.Popen(cmd,
                                     cwd     = cwd,
                                     stdout  = subprocess.PIPE,
-                                    stderr  = subprocess.PIPE)
+                                    stderr  = subprocess.PIPE,
+                                    shell   = shell)
             proc_thread = ThreadWithReturn(target=proc.communicate)
             proc_thread.start()
             result = proc_thread.join(timeout)
@@ -59,7 +60,8 @@ def run(cmd, cwd=None, timeout=60, debug=False):
                 proc2 = subprocess.Popen(cmd,
                                          cwd     = cwd,
                                          stdout  = subprocess.PIPE,
-                                         stderr  = subprocess.PIPE)
+                                         stderr  = subprocess.PIPE,
+                                         shell   = shell)
                 out, err = proc2.communicate(timeout=timeout)
                 returncode = proc2.returncode
             except FileNotFoundError as e:
@@ -82,8 +84,8 @@ def run(cmd, cwd=None, timeout=60, debug=False):
         out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
         raise RunError(cmd, None, message='Raise Exception : %s' % out)
     try:
-        if isinstance(out, bytes): out = out.decode("utf8")
-        if isinstance(err, bytes): err = err.decode("utf8")
+        if isinstance(out, bytes): out = str(out.decode(sys.stdin.encoding))
+        if isinstance(err, bytes): err = str(err.decode(sys.stdin.encoding))
     except UnicodeDecodeError as e:
         out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
         sys.stderr.write(out)

@@ -25,10 +25,10 @@ class Android:
     JAR_AUBS = "aubs.jar"
 
     # AUBS Method
-    AUBS = "jp.setsulla.stve.aubs.Aubs"
+    AUBS = "jp.setsulla.atve.aubs.Aubs"
 
-    AUBS_SYSTEM_ALLOWAPP = "jp.setsulla.stve.aubs.system.AndroidTest#testAllowSettingsApp"
+    AUBS_SYSTEM_ALLOWAPP = "jp.setsulla.atve.aubs.system.AndroidTest#testAllowSettingsApp"
 
     # AURA Service
-    AURA_PACKAGE = "jp.setsulla.stve.aura"
-    AURA_DEBUGON = "jp.setsulla.stve.aura.DEBUG_ON"
+    AURA_PACKAGE = "jp.setsulla.atve.aura"
+    AURA_DEBUGON = "jp.setsulla.atve.aura.DEBUG_ON"

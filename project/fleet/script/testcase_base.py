@@ -25,7 +25,7 @@ class TestCase_Unit(AtveTestCase):
 
     @classmethod
     def get_service(cls):
-         cls.adb = cls.service["atve.android"].get(cls.get("args.mobile"))
+         cls.adb = cls.service["atve.android"].get(cls.get("args.mobile"), PROFILE_DIR)
          # cls.browser = cls.service["atve.browser"].get()
          cls.picture = cls.service["atve.picture"].get()
 

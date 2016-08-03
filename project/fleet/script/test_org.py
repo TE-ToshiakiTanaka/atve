@@ -17,8 +17,11 @@ class TestCase(testcase.TestCase_Base):
     def test_1(self):
         L.info("*** Test 01 ***")
         self.assertTrue(1 == 1)
+        self.adb.invoke("com.dmm.dmmlabo.kancolle/.AppEntry")
+        time.sleep(10)
         self.adb_capture("capture.png")
 
     @classmethod
     def tearDownClass(cls):
         L.info("*** End TestCase     : %s *** " % __file__)
+        cls.adb.stop("com.dmm.dmmlabo.kancolle/.AppEntry")
