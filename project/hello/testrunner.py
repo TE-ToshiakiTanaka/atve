@@ -7,7 +7,7 @@ if not PATH in sys.path:
     sys.path.insert(0, PATH)
 
 if atve.__version__ < "0.1.0":
-    sys.exit("stve version over 0.1.0. : %s " % (atve.__version__))
+    sys.exit("atve version over 0.1.0. : %s " % (atve.__version__))
 
 from atve.application import AtveTestRunner
 from atve.workspace import Workspace
@@ -23,8 +23,6 @@ class TestRunner(object):
         self.tmp = self.workspace.mkdir("tmp")
         self.log = self.workspace.mkdir("log")
         self.report = self.workspace.mkdir("report")
-
-        #TestCase_Unit.register(LIB_DIR)
 
     def execute(self, script):
         self.runner.execute(script, SCRIPT_DIR)

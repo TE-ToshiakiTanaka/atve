@@ -7,8 +7,8 @@ except:
     import ConfigParser as configparser
 
 from atve.script import AtveTestCase
-from fleet.utility import *
-from fleet.utility import LOG as L
+from hello.utility import *
+from hello.utility import LOG as L
 
 class TestCase_Unit(AtveTestCase):
     def __init__(self, *args, **kwargs):

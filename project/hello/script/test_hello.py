@@ -3,10 +3,10 @@ import sys
 import time
 
 from hello.utility import *
-from fleet.utility import LOG as L
-from fleet.script import testcase_base
+from hello.utility import LOG as L
+from hello.script import testcase_base
 
-class TestCase(testcase_base.TestCase_Base):
+class TestCase(testcase_base.TestCase_Unit):
     def __init__(self, *args, **kwargs):
         super(TestCase, self).__init__(*args, **kwargs)
 
