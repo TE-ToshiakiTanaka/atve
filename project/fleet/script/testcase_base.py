@@ -13,7 +13,6 @@ from fleet.utility import LOG as L
 class TestCase_Unit(AtveTestCase):
     def __init__(self, *args, **kwargs):
         super(TestCase_Unit, self).__init__(*args, **kwargs)
-        self.register(LIB_DIR)
         self.get_config()
         self.get_service()
 
@@ -26,7 +25,6 @@ class TestCase_Unit(AtveTestCase):
 
     @classmethod
     def get_service(cls):
-         print(cls.config)
          cls.adb = cls.service["atve.android"].get(cls.get("args.mobile"))
          # cls.browser = cls.service["atve.browser"].get()
          cls.picture = cls.service["atve.picture"].get()
