@@ -86,12 +86,6 @@ class AndroidBase(object):
         cmd = "adb %s" % cmd
         return self.__exec(cmd, timeout)
 
-    def _adb_dump(self, cmd, timeout=TIMEOUT):
-        if "adb" in cmd:
-            L.debug("command include [adb]. : %s" % cmd)
-        cmd = "adb %s" % cmd
-        return self.__exec_dump(cmd, timeout)
-
 
     def push(self, src, dst, timeout=TIMEOUT):
         L.debug("[push] : %s -> %s" % (src, dst))
@@ -244,31 +238,20 @@ class Android(object):
         self._uiautomator = AndroidUiAutomator(self._adb)
         self._application = AndroidApplication(self._adb)
 
-        # L.info(self._uiautomator.build())
-        # self.push_uiautomator()
-
-        # L.info(self._application.release())
-        # self.install_application()
-
-        # self.exec_uiautomator(self.get().JAR_AUBS, self.get().AUBS_SYSTEM_ALLOWAPP, {})
-
     def get(self):
         return self._adb.get_profile()
 
-    def install_application(self):
-        self._application.install()
+    def install_application(self, directory, build=False):
+        if build: self._application.release(directory)
+        self._application.install(directory)
 
     def exec_application(self, command, bundle):
         self._application.execute(command, bundle)
 
-    def push_uiautomator(self, jar=""):
-        """
-            Push UiAutomator's jar file.
-            :arg string jar: Local Jar File Path.
-            :return string: adb result.
-        """
-        if jar == "":
-            jar = os.path.join(ADB_JAR_AUBS, "bin", self.get().JAR_AUBS)
+    def build_uiautomator(self, directory):
+        self._uiautomator.build(directory)
+
+    def push_uiautomator(self, jar):
         return self._uiautomator.push(jar)
 
     def exec_uiautomator(self, jar, exe, bundle):
@@ -283,7 +266,7 @@ class Android(object):
 
     def snapshot(self, filename, host):
         self._adb.shell("screencap -p /sdcard/%s" % (filename))
-        self._adb.pull("/sdcard/%s %s" % (filename, host))
+        self._adb.pull("/sdcard/%s" % (filename), host)
         self._adb.shell("rm /sdcard/%s" % (filename))
         return os.path.join(host, filename)
 
