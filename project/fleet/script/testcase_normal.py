@@ -36,6 +36,14 @@ class TestCase(testcase.TestCase_Base):
     def __supply_fleet_focus(self, fleet):
         return "supply_fleet_%s_focus.png" % fleet
 
+    def exercises(self):
+        if not self.enable_timeout("home.png"):
+            return False
+        self.tap_timeout("action_sortie.png"); time.sleep(2)
+        self.tap_timeout("sortie_exercises.png"); time.sleep(2)
+        time.sleep(10)
+        self.adb_screenshot("capture.png")
+
     def expedition(self, fleet, id):
         if not self.enable_timeout("home.png"):
             return False

@@ -14,14 +14,11 @@ class TestCase(testcase_normal.TestCase):
     def setUpClass(cls):
         L.info("*** Start TestCase   : %s *** " % __file__)
 
-    def test_expedition(self):
-        L.info("*** Expedition ***")
+    def test_exercises(self):
+        L.info("*** Exercises ***")
         self.assertTrue(self.initialize())
         while self.expedition_result(): time.sleep(3)
-        self.assertTrue(self.supply(self.get("args.fleet")))
-        self.assertTrue(self.home())
-        self.assertTrue(self.expedition(
-            self.get("args.fleet"), self.get("args.expedition")))
+        self.exercises()
         self.assertTrue(self.home())
 
 
