@@ -34,7 +34,7 @@ class TestCase_Base(testcase_android.TestCase_Android,
 
     def enable_timeout(self, reference, target=None, loop=5, timeout=5):
         result = False
-        for _ in xrange(loop):
+        for _ in range(loop):
             if self.enable(reference): result = True; break
             time.sleep(timeout)
         return result
