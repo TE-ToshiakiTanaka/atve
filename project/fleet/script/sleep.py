@@ -38,6 +38,7 @@ class TestCase(testcase_normal.TestCase):
             L.debug("Retry.")
         try:
             url2 = "%s/job/%s/build?delay=0sec" % (self.get("jenkins.url"), self.get("args.job"))
+            L.info(url2)
             r2 = urllib2.urlopen(url2)
             L.debug("HTTP Status Code : %d" % r2.getcode())
             self.assertTrue(r2.getcode() == 201)
