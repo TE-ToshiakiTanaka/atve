@@ -23,7 +23,7 @@ class ThreadWithReturn(threading.Thread):
         return self._return
 
 def run(cmd, cwd=None, timeout=60, debug=False, shell=False):
-    if type(cmd) in STRING_SET:
+    if type(cmd) in STRING_SET and not shell:
         cmd = [c for c in cmd.split() if c != '']
     if debug:
         sys.stderr.write(''.join(cmd) + '\n')
