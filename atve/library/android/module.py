@@ -15,7 +15,7 @@ from atve.exception import *
 
 TIMEOUT = 30
 UIAUTOMATOR_TIMEOUT = 180
-UIAUTOMATOR_PATH = "/data/local/tmp/"
+UIAUTOMATOR_PATH = os.path.join("", "data", "local", "tmp", "")
 
 ADB_ROOT = os.path.normpath(os.path.dirname(__file__))
 
