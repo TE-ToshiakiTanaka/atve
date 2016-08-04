@@ -18,7 +18,9 @@ class TestCase(testcase_normal.TestCase):
         L.info("*** Exercises ***")
         self.assertTrue(self.initialize())
         while self.expedition_result(): time.sleep(3)
-        self.exercises()
+        self.assertTrue(self.exercises())
+        while self.expedition_result(): time.sleep(3)
+        self.assertTrue(self.supply(self.get("args.fleet")))
         self.assertTrue(self.home())
 
 

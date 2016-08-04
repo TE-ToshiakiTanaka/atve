@@ -68,7 +68,8 @@ class Picture(object):
     def get_rgb(cls, pic, point=""):
         if point == "":
             point = POINT(0, 0, pic.size[0], pic.size[1])
-        box = (point.x, point.y, point.x + point.width, point.y + point.height)
+        box = (int(point.x), int(point.y),
+               int(point.x) + int(point.width), int(point.y) + int(point.height))
         rgbimg = pic.crop(box).convert("RGB")
         rgb = np.array(rgbimg.getdata())
         return [cls.__round(rgb[:,0]),
@@ -162,7 +163,8 @@ class Picture(object):
     @classmethod
     def crop(cls, pic, point):
         if point == None: raise PictureError("Point object is None.")
-        box = (point.x, point.y, point.x + point.width, point.y + point.height)
+        box = (int(point.x), int(point.y),
+               int(point.x) + int(point.width), int(point.y) + int(point.height))
         try:
             return pic.crop(box)
         except IOError as e:

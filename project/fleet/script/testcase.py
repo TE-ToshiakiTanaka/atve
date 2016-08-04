@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import fnmatch
 
 from fleet.script import testcase_android
 from fleet.script import testcase_picture
@@ -31,10 +32,47 @@ class TestCase_Base(testcase_android.TestCase_Android,
         except Exception as e:
             L.warning(e); raise e
 
+    def enable_pattern_crop(self, pattern, point, filename=None, loop=3, timeout=0.5):
+        references = self.__search_pattern(pattern)
+        for ref in references:
+            if self.enable_timeout_crop(
+                ref, point, filename, loop=loop, timeout=timeout):
+                return True
+        return False
+
+    def enable_pattern(self, pattern, loop=3, timeout=0.5):
+        targets = self.__search_pattern(pattern)
+        for target in targets:
+            if self.enable_timeout(target, loop=loop, timeout=timeout):
+                return True
+        return False
+
+    def tap_pattern(self, pattern, loop=3, timeout=0.5):
+        targets = self.__search_pattern(pattern)
+        for target in targets:
+            if self.tap_timeout(target, loop=loop, timeout=timeout):
+                return True
+        return False
+
+    def __search_pattern(self, pattern, host=""):
+        result = []
+        if host == "":
+            host = os.path.join(TMP_DIR, self.adb.get().SERIAL)
+        files = os.listdir(host)
+        return fnmatch.filter(files, pattern)
+
+    def enable_timeout_crop(self, reference, point, filename=None, loop=5, timeout=5):
+        if filename == None:
+            filename = self.adb_screenshot(self.adb.get().TMP_PICTURE)
+        target = self.picture_crop(filename, point,
+            self.get_target("crop_%s" % self.adb.get().TMP_PICTURE))
+        L.info(target)
+        return self.enable_timeout(reference, target, loop, timeout)
+
     def enable_timeout(self, reference, target=None, loop=5, timeout=5):
         result = False
         for _ in range(loop):
-            if self.enable(reference): result = True; break
+            if self.enable(reference, target): result = True; break
             time.sleep(timeout)
         return result
 
@@ -65,6 +103,6 @@ class TestCase_Base(testcase_android.TestCase_Android,
             return False
 
     def _tap(self, result):
-        x = int(result.y) + int(result.height / 2)
-        y = int(self.adb.get().WIDTH) - (int(result.x) + int(result.width / 2))
+        x = int(result.y) + int(result.height) / 2
+        y = int(self.adb.get().WIDTH) - (int(result.x) + int(result.width) / 2)
         return self.adb_tap(x, y)

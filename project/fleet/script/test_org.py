@@ -16,7 +16,8 @@ class TestCase(testcase_normal.TestCase):
 
     def test_1(self):
         L.info("*** Test 01 ***")
-        self.assertTrue(self.initialize())
+        self.adb_screenshot("capture.png")
+        #self.assertTrue(self.initialize())
 
     @classmethod
     def tearDownClass(cls):

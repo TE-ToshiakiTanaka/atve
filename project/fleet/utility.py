@@ -25,3 +25,17 @@ if not os.path.exists(logfile):
         os.utime(logfile, None)
 
 LOG.addHandler(log.Log.fileHandler(logfile, log.BASE_FORMAT, logging.DEBUG))
+
+class POINT(object):
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+    def __repr__(self):
+        return "POINT()"
+
+    def __str__(self):
+        return "(X, Y) = (%s, %s), Width = %s, Height = %s" \
+            % (self.x, self.y, self.width, self.height)

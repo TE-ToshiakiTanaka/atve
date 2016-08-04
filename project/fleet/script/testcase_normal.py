@@ -41,8 +41,31 @@ class TestCase(testcase.TestCase_Base):
             return False
         self.tap_timeout("action_sortie.png"); time.sleep(2)
         self.tap_timeout("sortie_exercises.png"); time.sleep(2)
-        time.sleep(10)
-        self.adb_screenshot("capture.png")
+        p = POINT(self.get("position.exercises_x"),
+                  self.get("position.exercises_y"),
+                  self.get("position.exercises_width"),
+                  self.get("position.exercises_height"))
+        for _ in range(5):
+            if self.enable_pattern_crop("exercises_win_*.png", p, loop=3, timeout=1):
+                L.info("I'm already fighting. I won.")
+            elif self.enable_pattern_crop("exercises_lose_*.png", p, loop=3, timeout=1):
+                L.info("I'm already fighting. I lost.")
+            else:
+                L.info(p);
+                while not self.enable_timeout("exercises_start.png", loop=3, timeout=2):
+                    self._tap(p); time.sleep(3)
+                self.tap_timeout("exercises_start.png", loop=3, timeout=1); time.sleep(2)
+                self.tap_timeout("exercises_attack.png", loop=3, timeout=1); time.sleep(2)
+                while not self.enable_timeout("next.png", loop=3, timeout=2):
+                    if self.tap_timeout("trail_formation.png", loop=3, timeout=1): time.sleep(2)
+                    if self.tap_timeout("night_battle_start.png"): time.sleep(1)
+                    time.sleep(10)
+                while self.tap_timeout("next.png", loop=3, timeout=2): time.sleep(5)
+                break
+            p.x = int(p.x) - int(p.width); L.info("Point : %s" % str(p))
+            if int(p.x) < 0:
+                self.home(); return False
+        return self.enable_timeout("home.png")
 
     def expedition(self, fleet, id):
         if not self.enable_timeout("home.png"):
