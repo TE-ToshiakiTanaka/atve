@@ -267,9 +267,9 @@ class Android(object):
         return self._uiautomator.execute(jar, exe, bundle)
 
     def snapshot(self, filename, host):
-        self._adb.shell('screencap -p file:///sdcard/%s' % (filename))
-        self._adb.pull('file:///sdcard/%s' % (filename), host)
-        self._adb.shell('rm file:///sdcard/%s' % (filename))
+        self._adb.shell('screencap -p /sdcard/%s' % (filename))
+        self._adb.pull('/sdcard/%s' % (filename), host)
+        self._adb.shell('rm /sdcard/%s' % (filename))
         return os.path.join(host, filename)
 
     def start(self, intent):
