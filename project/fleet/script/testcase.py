@@ -15,10 +15,9 @@ class TestCase_Base(testcase_android.TestCase_Android,
         """
         self.adb.install_application(AURA_APK_DIR)
         self.adb.exec_application(self.adb.get().AURA_DEBUGON, {})
-        """
-        #self.adb.build_uiautomator(AUBS_JAR_DIR)
+        self.adb.build_uiautomator(AUBS_JAR_DIR)
         self.adb.push_uiautomator(os.path.join(AUBS_JAR_DIR, "bin", self.adb.get().JAR_AUBS))
-
+        """
 
     def get_reference(self, reference):
         try:
