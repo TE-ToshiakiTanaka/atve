@@ -50,6 +50,7 @@ def run(cmd, cwd=None, timeout=60, debug=False, shell=False):
                     'message'   : 'command %s is time out' % cmd
                 })
             returncode = proc.returncode
+            if shell: returncode = 0
             if result == None:
                 out = None; err = None;
             else:

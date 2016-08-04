@@ -63,7 +63,7 @@ class AndroidBase(object):
 
     def __exec(self, cmd, timeout=TIMEOUT):
         L.debug(cmd)
-        result = run(cmd, timeout=timeout, shell=True)
+        result = run(cmd, timeout=timeout)
         if result != None:
             try:
                 if result[0] == 0:
