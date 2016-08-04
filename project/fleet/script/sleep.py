@@ -10,16 +10,17 @@ from fleet.script import testcase_normal
 
 class TestCase(testcase_normal.TestCase):
     def __init__(self, *args, **kwargs):
-        super(Unit, self).__init__(*args, **kwargs)
+        super(TestCase, self).__init__(*args, **kwargs)
 
     @classmethod
     def setUpClass(cls):
-        L.info("*** Start Unit   : %s *** " % __file__)
+        L.info("*** Start TestCase   : %s *** " % __file__)
 
     def test_step_1(self):
         result = False
         try:
-            url = "http://julius:7000/job/%s/api/json" % self.get("job")
+            url = "%s/job/%s/api/json" % (self.get("jenkins.url"), self.get("args.job"))
+            L.info(url)
             r = urllib2.urlopen(url)
             root = json.loads(r.read())
             latest = int(root['lastBuild']['number'])
@@ -30,13 +31,13 @@ class TestCase(testcase_normal.TestCase):
         finally:
             r.close()
         if result:
-            timeout = int(self.get("timeout"))
+            timeout = int(self.get("args.timeout"))
             L.debug("Timeout : %d " % timeout)
             time.sleep(timeout)
         else:
             L.debug("Retry.")
         try:
-            url2 = "http://julius:7000/job/%s/build?delay=0sec" % self.get("job")
+            url2 = "%s/job/%s/build?delay=0sec" % (self.get("jenkins.url"), self.get("args.job"))
             r2 = urllib2.urlopen(url2)
             L.debug("HTTP Status Code : %d" % r2.getcode())
             self.assertTrue(r2.getcode() == 201)
@@ -45,4 +46,4 @@ class TestCase(testcase_normal.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        L.info("*** End Unit   : %s *** " % __file__)
+        L.info("*** End TestCase   : %s *** " % __file__)
