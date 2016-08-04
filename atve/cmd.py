@@ -28,7 +28,6 @@ def run(cmd, cwd=None, timeout=60, debug=False, shell=False):
     if debug:
         sys.stderr.write(''.join(cmd) + '\n')
         sys.stderr.flush()
-
     try:
         if PYTHON_VERSION == 2:
             proc = subprocess.Popen(cmd,
