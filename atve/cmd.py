@@ -63,6 +63,7 @@ def run(cmd, cwd=None, timeout=60, debug=False, shell=False):
                                          shell   = shell)
                 out, err = proc2.communicate(timeout=timeout)
                 returncode = proc2.returncode
+                if shell: returncode = 0
             except FileNotFoundError as e:
                 out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
                 raise RunError(cmd, None, message='Raise Exception : %s' % out)
