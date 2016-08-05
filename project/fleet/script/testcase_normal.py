@@ -55,6 +55,8 @@ class TestCase(testcase.TestCase_Base):
                 while not self.enable_timeout("exercises_start.png", loop=3, timeout=2):
                     self._tap(p); time.sleep(3)
                 self.tap_timeout("exercises_start.png", loop=3, timeout=1); time.sleep(2)
+                if self.enable_timeout("exercises_unable.png", loop=3, timeout=1):
+                    return False
                 self.tap_timeout("exercises_attack.png", loop=3, timeout=1); time.sleep(2)
                 while not self.enable_timeout("next.png", loop=3, timeout=2):
                     if self.tap_timeout("trail_formation.png", loop=3, timeout=1): time.sleep(2)
