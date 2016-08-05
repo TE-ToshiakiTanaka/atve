@@ -80,7 +80,7 @@ class TestCase(testcase.TestCase_Base):
         if not self.enable_timeout(self.__expedition_fleet_focus(fleet), loop=2, timeout=2):
             self.tap_timeout(self.__expedition_fleet(fleet)); time.sleep(2)
         if self.enable_timeout("expedition_unable.png", loop=2, timeout=2):
-            return False
+            return True
         self.tap_timeout("expedition_start.png"); time.sleep(2)
         return self.enable_timeout("expedition_done.png")
 
