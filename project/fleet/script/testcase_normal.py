@@ -75,7 +75,7 @@ class TestCase(testcase.TestCase_Base):
         self.__expedition_stage(id); time.sleep(2)
         self.tap_timeout(self.__expedition_id(id)); time.sleep(2)
         if self.enable_timeout("expedition_done.png", loop=2, timeout=2):
-            return False
+            return True
         self.tap_timeout("expedition_decide.png"); time.sleep(2)
         if not self.enable_timeout(self.__expedition_fleet_focus(fleet), loop=2, timeout=2):
             self.tap_timeout(self.__expedition_fleet(fleet)); time.sleep(2)
