@@ -103,6 +103,10 @@ class TestCase_Base(testcase_android.TestCase_Android,
             return False
 
     def _tap(self, result):
-        x = int(result.y) + int(result.height) / 2
-        y = int(self.adb.get().WIDTH) - (int(result.x) + int(result.width) / 2)
+        if self.adb.get().LOCATE == "H":
+            x = int(result.x) + int(result.width) / 2
+            y = int(result.y) + int(result.height) / 2
+        else:
+            x = int(result.y) + int(result.height) / 2
+            y = int(self.adb.get().WIDTH) - (int(result.x) + int(result.width) / 2)
         return self.adb_tap(x, y)

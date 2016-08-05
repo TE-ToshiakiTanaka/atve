@@ -19,7 +19,7 @@ class TestCase(testcase_normal.TestCase):
     def test_step_1(self):
         result = False
         try:
-            url = "%s/job/%s/api/json" % (self.get("jenkins.url"), self.get("args.job"))
+            url = "%s/job/%s/api/json" % (self.get("args.url"), self.get("args.job"))
             L.info(url)
             r = urllib2.urlopen(url)
             root = json.loads(r.read())
@@ -37,7 +37,7 @@ class TestCase(testcase_normal.TestCase):
         else:
             L.debug("Retry.")
         try:
-            url2 = "%s/job/%s/build?delay=0sec" % (self.get("jenkins.url"), self.get("args.job"))
+            url2 = "%s/job/%s/build?delay=0sec" % (self.get("args.url"), self.get("args.job"))
             L.info(url2)
             r2 = urllib2.urlopen(url2)
             L.debug("HTTP Status Code : %d" % r2.getcode())

@@ -29,6 +29,8 @@ class TestCase_Unit(AtveTestCase):
                             help='Jenkins Job.')
         parser.add_argument('-t', action='store', dest='timeout',
                             help='Timeout.')
+        parser.add_argument('-u', action='store', dest='url',
+                            help='target Jenkins URL.')
         return parser
 
     @classmethod
