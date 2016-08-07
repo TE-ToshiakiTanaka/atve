@@ -25,6 +25,8 @@ class TestCase_Unit(AtveTestCase):
                             help='Fleet Number. (1 ~ 4)')
         parser.add_argument('-e', action='store', dest='expedition',
                             help='Expedition ID.')
+        parser.add_argument('-a', action='store', dest='attack',
+                            help='Attack ID.')
         parser.add_argument('-j', action='store', dest='job',
                             help='Jenkins Job.')
         parser.add_argument('-t', action='store', dest='timeout',

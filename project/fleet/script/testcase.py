@@ -84,6 +84,16 @@ class TestCase_Base(testcase_android.TestCase_Android,
         return self.picture_is_pattern(
             self.get_target(target), self.get_reference(reference))
 
+    def find(self, reference, target=None):
+        L.debug("reference : %s " % reference)
+        if target == None:
+            self.adb_screenshot(self.adb.get().TMP_PICTURE)
+            target = self.adb.get().TMP_PICTURE
+        result = self.picture_find_pattern(
+            self.get_target(target), self.get_reference(reference))
+        if not result == None: return result
+        else: return None
+
     def tap_timeout(self, reference, target=None, loop=5, timeout=5):
         if not self.enable_timeout(reference, target, loop, timeout):
             return False
