@@ -79,6 +79,7 @@ class TestCase(testcase.TestCase_Base):
         if not self.enable_timeout(self.__attack_fleet_focus(fleet), loop=3, timeout=1):
             self.tap_timeout(self.__attack_fleet(fleet)); time.sleep(1)
         if self.enable_timeout("attack_unable.png", loop=2, timeout=1):
+            self.home()
             return False
         self.tap_timeout("attack_start.png"); time.sleep(10)
         return self.enable_timeout("attack_compass.png")
@@ -160,6 +161,7 @@ class TestCase(testcase.TestCase_Base):
         if not self.enable_timeout(self.__expedition_fleet_focus(fleet), loop=2, timeout=2):
             self.tap_timeout(self.__expedition_fleet(fleet)); time.sleep(2)
         if self.enable_timeout("expedition_unable.png", loop=2, timeout=2):
+            self.home()
             return False
         self.tap_timeout("expedition_start.png"); time.sleep(2)
         return self.enable_timeout("expedition_done.png")
