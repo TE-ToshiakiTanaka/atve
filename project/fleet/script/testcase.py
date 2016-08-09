@@ -2,7 +2,7 @@ import os
 import sys
 import time
 import fnmatch
-import ramdom
+import random
 
 from fleet.script import testcase_android
 from fleet.script import testcase_picture
