@@ -21,6 +21,9 @@ class TestCase_Base(testcase_android.TestCase_Android,
         self.adb.push_uiautomator(os.path.join(AUBS_JAR_DIR, "bin", self.adb.get().JAR_AUBS))
         """
 
+    def sleep(self, min=5):
+        time.sleep(min * random.random())
+
     def get_reference(self, reference):
         try:
             return os.path.join(TMP_DIR, self.adb.get().SERIAL, reference)
