@@ -10,24 +10,24 @@ class TestCase(testcase.TestCase_Base):
 
     def initialize(self):
         if self.enable_timeout("home.png"):
-            self.tap_timeout("action_formation.png"); time.sleep(2)
+            self.tap_timeout("action_formation.png"); self.sleep()
             self.tap_timeout("action_home.png")
             return self.enable_timeout("home.png")
         else:
             self.adb.stop("com.dmm.dmmlabo.kancolle/.AppEntry")
             time.sleep(5)
-            self.adb.invoke("com.dmm.dmmlabo.kancolle/.AppEntry"); time.sleep(2)
-            self.tap_timeout("start_music_off.png", timeout=2); time.sleep(2)
-            self.tap_timeout("start_game.png", timeout=2); time.sleep(2)
+            self.adb.invoke("com.dmm.dmmlabo.kancolle/.AppEntry"); self.sleep()
+            self.tap_timeout("start_music_off.png", timeout=2); self.sleep()
+            self.tap_timeout("start_game.png", timeout=2); self.sleep()
             return self.enable_timeout("home.png")
 
     def supply(self, fleet):
         if not self.enable_timeout("home.png"):
             return False
-        self.tap_timeout("action_supply.png"); time.sleep(2)
+        self.tap_timeout("action_supply.png"); self.sleep()
         if not self.enable_timeout(self.__supply_fleet_focus(fleet), loop=2, timeout=2):
-            self.tap_timeout(self.__supply_fleet(fleet)); time.sleep(2)
-        self.tap_timeout("supply_all.png"); time.sleep(2)
+            self.tap_timeout(self.__supply_fleet(fleet)); self.sleep()
+        self.tap_timeout("supply_all.png"); self.sleep()
         return True
 
     def __supply_fleet(self, fleet):
@@ -39,7 +39,7 @@ class TestCase(testcase.TestCase_Base):
     def docking(self):
         if not self.enable_timeout("home.png"):
             return False
-        self.tap_timeout("action_docking.png"); time.sleep(2)
+        self.tap_timeout("action_docking.png"); self.sleep()
         for _ in range(2):
             position = self.find("docking_room.png")
             if position == None: break
@@ -71,14 +71,15 @@ class TestCase(testcase.TestCase_Base):
     def attack(self, fleet, id):
         if not self.enable_timeout("home.png"):
             return False
-        self.tap_timeout("action_sortie.png"); time.sleep(2)
-        self.tap_timeout("sortie_attack.png"); time.sleep(2)
+        self.tap_timeout("action_sortie.png"); self.sleep()
+        self.tap_timeout("sortie_attack.png"); self.sleep()
         self.__attack_stage(id)
-        self.tap_timeout(self.__attack_id(id)); time.sleep(2)
-        self.tap_timeout("attack_decide.png"); time.sleep(2)
+        self.tap_timeout(self.__attack_id(id)); self.sleep()
+        self.tap_timeout("attack_decide.png"); self.sleep()
         if not self.enable_timeout(self.__attack_fleet_focus(fleet), loop=3, timeout=1):
             self.tap_timeout(self.__attack_fleet(fleet)); time.sleep(1)
         if self.enable_timeout("attack_unable.png", loop=2, timeout=1):
+            self.home()
             return False
         self.tap_timeout("attack_start.png"); time.sleep(10)
         return self.enable_timeout("attack_compass.png")
@@ -104,20 +105,22 @@ class TestCase(testcase.TestCase_Base):
             return False
         self.tap_timeout("attack_compass.png")
         while not self.enable_timeout("next.png", loop=3, timeout=2):
-            if self.tap_timeout("attack_formation_1.png", loop=3, timeout=1): time.sleep(2)
+            if self.tap_timeout("attack_formation_1.png", loop=3, timeout=1): self.sleep()
             if self.tap_timeout("night_battle_stop.png", loop=3, timeout=1): time.sleep(1)
             time.sleep(10)
         while self.tap_timeout("next.png", loop=3, timeout=2): time.sleep(5)
         while not self.enable_timeout("attack_withdrawal.png", loop=3, timeout=2):
-            self.tap_timeout("return.png", loop=3, timeout=2); time.sleep(5)
+            if self.enable_timeout("return.png", loop=3, timeout=1):
+                self.adb_screenshot("drop_%s.png" % self.adb.get().SERIAL)
+                self.tap_timeout("return.png", loop=3, timeout=2)
         self.tap_timeout("attack_withdrawal.png"); time.sleep(1)
         return self.enable_timeout("home.png")
 
     def exercises(self):
         if not self.enable_timeout("home.png"):
             return False
-        self.tap_timeout("action_sortie.png"); time.sleep(2)
-        self.tap_timeout("sortie_exercises.png"); time.sleep(2)
+        self.tap_timeout("action_sortie.png"); self.sleep()
+        self.tap_timeout("sortie_exercises.png"); self.sleep()
         p = POINT(self.get("position.exercises_x"),
                   self.get("position.exercises_y"),
                   self.get("position.exercises_width"),
@@ -131,12 +134,12 @@ class TestCase(testcase.TestCase_Base):
                 L.info(p);
                 while not self.enable_timeout("exercises_start.png", loop=3, timeout=2):
                     self._tap(p); time.sleep(3)
-                self.tap_timeout("exercises_start.png", loop=3, timeout=1); time.sleep(2)
+                self.tap_timeout("exercises_start.png", loop=3, timeout=1); self.sleep()
                 if self.enable_timeout("exercises_unable.png", loop=3, timeout=1):
                     return False
-                self.tap_timeout("exercises_attack.png", loop=3, timeout=1); time.sleep(2)
+                self.tap_timeout("exercises_attack.png", loop=3, timeout=1); self.sleep()
                 while not self.enable_timeout("next.png", loop=3, timeout=2):
-                    if self.tap_timeout("trail_formation.png", loop=3, timeout=1): time.sleep(2)
+                    if self.tap_timeout("trail_formation.png", loop=3, timeout=1): self.sleep()
                     if self.tap_timeout("night_battle_start.png"): time.sleep(1)
                     time.sleep(10)
                 while self.tap_timeout("next.png", loop=3, timeout=2): time.sleep(5)
@@ -150,18 +153,19 @@ class TestCase(testcase.TestCase_Base):
     def expedition(self, fleet, id):
         if not self.enable_timeout("home.png"):
             return False
-        self.tap_timeout("action_sortie.png"); time.sleep(2)
-        self.tap_timeout("sortie_expedition.png"); time.sleep(2)
-        self.__expedition_stage(id); time.sleep(2)
-        self.tap_timeout(self.__expedition_id(id)); time.sleep(2)
+        self.tap_timeout("action_sortie.png"); self.sleep()
+        self.tap_timeout("sortie_expedition.png"); self.sleep()
+        self.__expedition_stage(id); self.sleep()
+        self.tap_timeout(self.__expedition_id(id)); self.sleep()
         if self.enable_timeout("expedition_done.png", loop=2, timeout=2):
             return True
-        self.tap_timeout("expedition_decide.png"); time.sleep(2)
+        self.tap_timeout("expedition_decide.png"); self.sleep()
         if not self.enable_timeout(self.__expedition_fleet_focus(fleet), loop=2, timeout=2):
-            self.tap_timeout(self.__expedition_fleet(fleet)); time.sleep(2)
+            self.tap_timeout(self.__expedition_fleet(fleet)); self.sleep()
         if self.enable_timeout("expedition_unable.png", loop=2, timeout=2):
+            self.home()
             return False
-        self.tap_timeout("expedition_start.png"); time.sleep(2)
+        self.tap_timeout("expedition_start.png"); self.sleep()
         return self.enable_timeout("expedition_done.png")
 
 

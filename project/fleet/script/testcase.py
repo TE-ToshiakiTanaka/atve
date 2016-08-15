@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import fnmatch
+import random
 
 from fleet.script import testcase_android
 from fleet.script import testcase_picture
@@ -19,6 +20,9 @@ class TestCase_Base(testcase_android.TestCase_Android,
         self.adb.build_uiautomator(AUBS_JAR_DIR)
         self.adb.push_uiautomator(os.path.join(AUBS_JAR_DIR, "bin", self.adb.get().JAR_AUBS))
         """
+
+    def sleep(self, min=5):
+        time.sleep(min * random.random())
 
     def get_reference(self, reference):
         try:
@@ -114,9 +118,9 @@ class TestCase_Base(testcase_android.TestCase_Android,
 
     def _tap(self, result):
         if self.adb.get().LOCATE == "H":
-            x = int(result.x) + int(result.width) / 2
-            y = int(result.y) + int(result.height) / 2
+            x = int(result.x) + random.randint(int(int(result.width) * 0.1) , int(int(result.width) * 0.9))
+            y = int(result.y) + random.randint(int(int(result.height) * 0.1) , int(int(result.height) * 0.9))
         else:
-            x = int(result.y) + int(result.height) / 2
-            y = int(self.adb.get().WIDTH) - (int(result.x) + int(result.width) / 2)
+            x = int(result.y) + random.randint(int(int(result.height) * 0.1) , int(int(result.height) * 0.9))
+            y = int(self.adb.get().WIDTH) - (int(result.x) + random.randint(int(int(result.width) * 0.1) , int(int(result.width) * 0.9)))
         return self.adb_tap(x, y)
