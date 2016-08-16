@@ -1,14 +1,6 @@
 import os
 import sys
 
-from PIL import Image
-from PIL import ImageOps
-from PIL import ImageDraw
-from PIL import ImageEnhance
-
-import cv2
-import numpy as np
-
 from atve.log import Log
 from atve.exception import *
 
@@ -16,6 +8,17 @@ SHARPNESS = 2.0
 CONTRAST = 2.0
 
 PMC_THRESHOLD = 0.96
+
+try :
+    from PIL import Image
+    from PIL import ImageOps
+    from PIL import ImageDraw
+    from PIL import ImageEnhance
+
+    import cv2
+    import numpy as np
+except Exception as e:
+    print(str(e))
 
 class POINT(object):
     def __init__(self, x, y, width, height):

@@ -2,9 +2,6 @@ import sys
 import os
 import time
 import platform
-from selenium import webdriver
-from selenium.webdriver import FirefoxProfile
-from selenium.webdriver.common.action_chains import ActionChains
 
 DRIVER_PATH = os.path.abspath(os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "driver"))
@@ -16,6 +13,13 @@ DEFAULT_WAIT = 60
 WINDOW_SIZE_WIDTH = 1280
 WINDOW_SIZE_HEIGHT = 800
 L = Log("Browser.Library.ATVE")
+
+try:
+    from selenium import webdriver
+    from selenium.webdriver import FirefoxProfile
+    from selenium.webdriver.common.action_chains import ActionChains
+except Exception as e:
+    print(str(e))
 
 class Selenium(object):
     driver = None
