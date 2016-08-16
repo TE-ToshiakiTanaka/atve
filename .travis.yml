@@ -19,4 +19,4 @@ install:
 
 # command to run tests
 script:
-    - nosetests -v test/test_* --with-xunit --with-coverage --cover-erase --cover-package=atve
+    - nosetests -v test/test_* --with-xunit --with-coverage --exclude-dir=atve/library
