@@ -10,4 +10,3 @@ py==1.4.31
 requests==2.10.0
 virtualenv==15.0.2
 xmlrunner==1.7.7
-tox==2.3.1

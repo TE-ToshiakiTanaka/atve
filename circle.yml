@@ -1,0 +1,26 @@
+machine:
+    python:
+        version: '2.7.11'
+    timezone: Asia/Tokyo
+    environment:
+        TOX_PY27: '2.7.11'
+        TOX_PY34: '3.4.4'
+        TOX_PY35: '3.5.1'
+
+dependencies:
+    pre:
+        - pip -V
+        - pip install -U setuptools
+        - pip install -U ipdb
+        - pip install -U -r requirements-travis.txt
+        - pyenv local $TOX_PY27 $TOX_PY34 $TOX_PY35
+
+test:
+    override:
+        - tox -v
+        - python setup.py bdist_wheel --universal
+    post:
+        - mkdir -p $CIRCLE_TEST_REPORTS/nose/
+        - mv nosetests.xml $CIRCLE_TEST_REPORTS/nose/
+        - mv dist $CIRCLE_ARTIFACTS
+        - mv cover $CIRCLE_ARTIFACTS
