@@ -1,19 +1,9 @@
-sudo: required
-dist: trusty
+sudo: false
 git:
   submodules: false
-
-addons:
-    apt:
-        sources:
-            - google-chrome
-        packages:
-            - xvfb
-            - google-chrome-stable
-            - python-numpy
-            - python-opencv
 language: python
 python:
+    - "2.6"
     - "2.7"
     - "3.4"
     - "3.5"
@@ -22,16 +12,11 @@ python:
     - "pypy"
 
 before_install:
-    - export DISPLAY=':99.0'
-    - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-    - chmod +x opencv_install.sh opencv_setup.sh
-    - ./opencv_install.sh
-    - ./opencv_setup.sh
+    # command to install dependencies
 
-# command to install dependencies
 install:
     # - pip install .
-    - pip install -r requirements.txt
+    - pip install -r requirements-travis.txt
 
 # command to run tests
 script:
