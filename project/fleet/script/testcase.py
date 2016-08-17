@@ -107,7 +107,6 @@ class TestCase_Base(testcase_android.TestCase_Android,
         return self.tap(reference, target)
 
     def tap(self, reference, target=None):
-        L.debug("reference : %s " % reference)
         if target == None:
             self.adb_screenshot(self.adb.get().TMP_PICTURE)
             target = self.adb.get().TMP_PICTURE
