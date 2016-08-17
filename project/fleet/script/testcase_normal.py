@@ -203,9 +203,9 @@ class TestCase(testcase.TestCase_Base):
 
     def expedition_result(self):
         if self.enable_timeout("expedition_result.png", loop=2, timeout=1):
-            self.tap_timeout("expedition_result.png"); time.sleep(5)
-            self.tap_timeout("next.png"); time.sleep(1)
-            self.tap_timeout("next.png"); time.sleep(1)
+            self.tap_timeout("expedition_result.png"); time.sleep(7)
+            self.tap_timeout("next.png"); time.sleep(2)
+            self.tap_timeout("next.png"); time.sleep(2)
             return self.enable_timeout("expedition_result.png", loop=3, timeout=1)
         else:
             return False
