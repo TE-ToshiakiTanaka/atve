@@ -21,8 +21,10 @@ class TestCase_Base(testcase_android.TestCase_Android,
         self.adb.push_uiautomator(os.path.join(AUBS_JAR_DIR, "bin", self.adb.get().JAR_AUBS))
         """
 
-    def sleep(self, min=5):
-        time.sleep(min * random.random())
+    def sleep(self, base=4):
+        sleep_time = (0.5 + base * random.random())
+        L.debug("sleep time : %s" % sleep_time)
+        time.sleep(sleep_time)
 
     def get_reference(self, reference):
         try:

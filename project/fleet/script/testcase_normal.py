@@ -52,10 +52,10 @@ class TestCase(testcase.TestCase_Base):
     def __docking(self):
         if not self.enable_timeout("docking_next.png", loop=3, timeout=1):
             return False
-        p = POINT(self.get("position.docking_x"),
-                  self.get("position.docking_y"),
-                  self.get("position.docking_width"),
-                  self.get("position.docking_height"))
+        p = POINT(int(self.adb.get().DOCKING_X),
+                  int(self.adb.get().DOCKING_Y),
+                  int(self.adb.get().DOCKING_WIDTH),
+                  int(self.adb.get().DOCKING_HEIGHT))
         for _ in range(7):
             L.info(p)
             self._tap(p); time.sleep(3)
@@ -64,8 +64,12 @@ class TestCase(testcase.TestCase_Base):
             elif self.tap_timeout("docking_start.png", loop=3, timeout=1):
                 if self.tap_timeout("docking_yes.png", loop=3, timeout=1):
                     time.sleep(10); return True
-            p.x = int(p.x) - int(p.width)
-            if int(p.x) < 0: return False
+            if self.adb.get().LOCATE == "V":
+                p.x = int(p.x) - int(p.width)
+                if int(p.x) < 0: return False
+            else:
+                p.y = int(p.y) + int(p.height)
+                if int(p.y) > int(self.adb.get().HEIGHT): return False
         return True
 
     def attack(self, fleet, id):
@@ -121,10 +125,10 @@ class TestCase(testcase.TestCase_Base):
             return False
         self.tap_timeout("action_sortie.png"); self.sleep()
         self.tap_timeout("sortie_exercises.png"); self.sleep()
-        p = POINT(self.get("position.exercises_x"),
-                  self.get("position.exercises_y"),
-                  self.get("position.exercises_width"),
-                  self.get("position.exercises_height"))
+        p = POINT(int(self.adb.get().EXERCISES_X),
+                  int(self.adb.get().EXERCISES_Y),
+                  int(self.adb.get().EXERCISES_WIDTH),
+                  int(self.adb.get().EXERCISES_HEIGHT))
         for _ in range(5):
             if self.enable_pattern_crop("exercises_win_*.png", p, loop=3, timeout=1):
                 L.info("I'm already fighting. I won.")
@@ -137,16 +141,21 @@ class TestCase(testcase.TestCase_Base):
                 self.tap_timeout("exercises_start.png", loop=3, timeout=1); self.sleep()
                 if self.enable_timeout("exercises_unable.png", loop=3, timeout=1):
                     return False
-                self.tap_timeout("exercises_attack.png", loop=3, timeout=1); self.sleep()
-                while not self.enable_timeout("next.png", loop=3, timeout=2):
-                    if self.tap_timeout("trail_formation.png", loop=3, timeout=1): self.sleep()
-                    if self.tap_timeout("night_battle_start.png"): time.sleep(1)
-                    time.sleep(10)
-                while self.tap_timeout("next.png", loop=3, timeout=2): time.sleep(5)
-                break
-            p.x = int(p.x) - int(p.width); L.info("Point : %s" % str(p))
-            if int(p.x) < 0:
-                self.home(); return False
+
+                if self.tap_timeout("exercises_attack.png", loop=3, timeout=1):
+                    self.sleep()
+                    while not self.enable_timeout("next.png", loop=3, timeout=2):
+                        if self.tap_timeout("trail_formation.png", loop=3, timeout=1): self.sleep()
+                        if self.tap_timeout("night_battle_start.png"): time.sleep(1)
+                        time.sleep(10)
+                    while self.tap_timeout("next.png", loop=3, timeout=2): time.sleep(5)
+                    break
+            if self.adb.get().LOCATE == "V":
+                p.x = int(p.x) - int(p.width); L.info("Point : %s" % str(p))
+                if int(p.x) < 0: self.home(); return False
+            else:
+                p.y = int(p.y) + int(p.height); L.info("Point : %s" % str(p))
+                if int(p.y) > int(self.adb.get().HEIGHT): return False
         return self.enable_timeout("home.png")
 
     #--- Expedition
