@@ -11,8 +11,7 @@ class TestCase(testcase.TestCase_Base):
     def initialize(self):
         if self.enable_timeout("home.png"):
             self.tap_timeout("action_formation.png"); self.sleep()
-            self.tap_timeout("action_home.png")
-            return self.enable_timeout("home.png")
+            return self.home()
         else:
             self.adb.stop("com.dmm.dmmlabo.kancolle/.AppEntry")
             time.sleep(5)
@@ -120,7 +119,7 @@ class TestCase(testcase.TestCase_Base):
                     self.picture_rotate(fname, "90")
                     self.picture_resize(fname, "480P")
                 self.tap_timeout("return.png", loop=3, timeout=2)
-        self.tap_timeout("attack_withdrawal.png"); time.sleep(1)
+        self.tap_timeout("attack_withdrawal.png"); time.sleep(5)
         return self.enable_timeout("home.png")
 
     def exercises(self):
@@ -159,6 +158,7 @@ class TestCase(testcase.TestCase_Base):
             else:
                 p.y = int(p.y) + int(p.height); L.info("Point : %s" % str(p))
                 if int(p.y) > int(self.adb.get().HEIGHT): return False
+        time.sleep(3)
         return self.enable_timeout("home.png")
 
     #--- Expedition
@@ -207,5 +207,5 @@ class TestCase(testcase.TestCase_Base):
             return False
 
     def home(self):
-        self.tap_timeout("action_home.png")
+        self.tap_timeout("action_home.png"); time.sleep(3)
         return self.enable_timeout("home.png")
