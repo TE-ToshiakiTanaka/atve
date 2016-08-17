@@ -92,6 +92,14 @@ class Picture(object):
         return pic.resize(sz)
 
     @classmethod
+    def rotate(cls, pic, rotate):
+        if rotate == "90": rt = Image.ROTATE_90
+        elif rotate == "180": rt = Image.ROTATE_180
+        elif rotate == "270": rt = Image.ROTATE_270
+        else: return
+        return pic.transpose(rt)
+
+    @classmethod
     def info(cls, pic):
         cls.L.info("File Format : %s " % pic.format)
         cls.L.info("File Size   : %s " % str(pic.size))
