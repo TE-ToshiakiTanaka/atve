@@ -108,8 +108,11 @@ class TestCase(testcase.TestCase_Base):
             return False
         self.tap_timeout("attack_compass.png")
         while not self.enable_timeout("next.png", loop=3, timeout=2):
-            if self.tap_timeout("attack_formation_1.png", loop=3, timeout=1): self.sleep()
-            if self.tap_timeout("night_battle_stop.png", loop=3, timeout=1): time.sleep(1)
+            target = self.adb.get().TMP_PICTURE
+            if self.tap_timeout("attack_formation_1.png", target, loop=3, timeout=1):
+                self.sleep(); self.adb_screenshot(self.adb.get().TMP_PICTURE)
+            if self.tap_timeout("night_battle_stop.png", target, loop=3, timeout=1):
+                self.sleep(); self.adb_screenshot(self.adb.get().TMP_PICTURE)
             time.sleep(10)
         while self.tap_timeout("next.png", loop=3, timeout=2): time.sleep(5)
         while not self.enable_timeout("attack_withdrawal.png", loop=3, timeout=2):
@@ -131,10 +134,11 @@ class TestCase(testcase.TestCase_Base):
                   int(self.adb.get().EXERCISES_Y),
                   int(self.adb.get().EXERCISES_WIDTH),
                   int(self.adb.get().EXERCISES_HEIGHT))
+        target = self.adb_screenshot(self.adb.get().TMP_PICTURE)
         for _ in range(5):
-            if self.enable_pattern_crop("exercises_win_*.png", p, loop=3, timeout=1):
+            if self.enable_pattern_crop("exercises_win_*.png", p, filename=target, loop=3, timeout=1):
                 L.info("I'm already fighting. I won.")
-            elif self.enable_pattern_crop("exercises_lose_*.png", p, loop=3, timeout=1):
+            elif self.enable_pattern_crop("exercises_lose_*.png", p, filename=target, loop=3, timeout=1):
                 L.info("I'm already fighting. I lost.")
             else:
                 L.info(p);
