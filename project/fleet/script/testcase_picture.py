@@ -28,6 +28,16 @@ class TestCase_Picture(testcase_base.TestCase_Unit):
         except Exception as e:
             L.warning(e)
 
+    def picture_resize(self, filepath, resize, rename=""):
+        try:
+            pic = self.picture.open(filepath)
+            resize_pic = self.picture.resize(pic, resize)
+            if rename == "": rename = filepath
+            return self.picture.save(resize_pic, rename)
+        except Exception as e:
+            L.warning(e)
+
+
     def picture_is_pattern(self, reference, target):
         try:
             return self.picture.is_pattern(reference, target)

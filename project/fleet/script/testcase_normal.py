@@ -112,7 +112,9 @@ class TestCase(testcase.TestCase_Base):
         while not self.enable_timeout("attack_withdrawal.png", loop=3, timeout=2):
             if self.enable_timeout("return.png", loop=3, timeout=1):
                 fname = self.adb_screenshot("drop_%s.png" % self.adb.get().SERIAL)
-                if self.adb.get().LOCATE == "V": self.picture_rotate(fname, "90")
+                if self.adb.get().LOCATE == "V":
+                    self.picture_rotate(fname, "90")
+                    self.picture_resize(fname, "480P")
                 self.tap_timeout("return.png", loop=3, timeout=2)
         self.tap_timeout("attack_withdrawal.png"); time.sleep(1)
         return self.enable_timeout("home.png")
