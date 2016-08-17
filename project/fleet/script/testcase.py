@@ -103,6 +103,7 @@ class TestCase_Base(testcase_android.TestCase_Android,
     def tap_timeout(self, reference, target=None, loop=5, timeout=5):
         if not self.enable_timeout(reference, target, loop, timeout):
             return False
+        target = self.adb.get().TMP_PICTURE
         return self.tap(reference, target)
 
     def tap(self, reference, target=None):
