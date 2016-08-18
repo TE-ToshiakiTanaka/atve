@@ -148,16 +148,25 @@ class TestCase(testcase.TestCase_Base):
                 L.info(p);
                 while not self.enable_timeout("exercises_start.png", loop=3, timeout=2):
                     self._tap(p); time.sleep(3)
+                fname = self.adb_screenshot("drop_%s.png" % self.adb.get().SERIAL)
+                if self.adb.get().LOCATE == "V":
+                    self.picture_rotate(fname, "90")
+                self.picture_resize(fname, "480P")
                 self.tap_timeout("exercises_start.png", loop=3, timeout=1); self.sleep()
                 if self.enable_timeout("exercises_unable.png", loop=3, timeout=1):
                     return False
-
+                self.slack.upload(fname, self.get("args.channel"))
                 if self.tap_timeout("exercises_attack.png", loop=3, timeout=1):
+                    self.slack.message(self.get("kancolle_bot.exercises_start"), self.get("args.channel"))
                     self.sleep()
                     while not self.enable_timeout("next.png", loop=3, timeout=2):
                         if self.tap_timeout("trail_formation.png", loop=3, timeout=1): self.sleep()
-                        if self.tap_timeout("night_battle_start.png"): time.sleep(1)
+                        if self.tap_timeout("night_battle_start.png"):
+                            self.slack.message(self.get("kancolle_bot.night_battle_start"), self.get("args.channel"))
+                            time.sleep(1)
                         time.sleep(10)
+                    target = self.adb_screenshot(self.adb.get().TMP_PICTURE)
+                    if self.enable_timeout("d.png", target): self.slack.message(self.get("kancolle_bot.result_d"), self.get("args.channel"))
                     while self.tap_timeout("next.png", loop=3, timeout=2): time.sleep(5)
                     break
             if self.adb.get().LOCATE == "V":
