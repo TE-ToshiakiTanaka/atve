@@ -18,7 +18,7 @@ class TestCase(testcase_normal.TestCase):
 
     def test_step_1(self):
         timeout = int(self.get("args.timeout"))
-        L.debug("Timeout : %d " % timeout * 3600)
+        L.debug("Timeout : %d " % (timeout * 3600))
         self.adb.stop("com.dmm.dmmlabo.kancolle/.AppEntry")
         time.sleep(timeout * 3600)
 
