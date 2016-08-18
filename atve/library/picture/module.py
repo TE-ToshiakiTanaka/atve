@@ -93,7 +93,7 @@ class Picture(object):
             else: return
         else:
             if size == "480P": sz = (480, ((height * 480) / width)
-            elif size == "720P": sz =   (720, ((height * 720) / width)
+            elif size == "720P": sz = (720, ((height * 720) / width)
             elif size == "1080P": sz = (1080, (height * 1080) / width)
             else: return
         cls.L.info("size : %s" % str(sz))
