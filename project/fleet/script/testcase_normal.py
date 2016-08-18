@@ -209,12 +209,16 @@ class TestCase(testcase.TestCase_Base):
         if self.enable_timeout("expedition_result.png", loop=2, timeout=1):
             self.tap_timeout("expedition_result.png"); time.sleep(7)
             self.adb_screenshot(self.adb.get().TMP_PICTURE)
-            target = self.adb.get().TMP_PICTURE
             if self.enable_timeout("expedition_success.png", loop=2, timeout=1):
                 self.slack.message(self.get("kancolle_bot.expedition_success"), self.get("args.channel"))
             elif self.enable_timeout("expedition_failed.png", loop=2, timeout=1):
                 self.slack.message(self.get("kancolle_bot.expedition_failed"), self.get("args.channel"))
             self.tap_timeout("next.png"); time.sleep(2)
+            fname = self.adb_screenshot(self.adb.get().TMP_PICTURE)
+            if self.adb.get().LOCATE == "V":
+                self.picture_rotate(fname, "90")
+            self.picture_resize(fname, "480P")
+            self.slack.upload(fname, self.get("args.channel"))
             self.tap_timeout("next.png"); time.sleep(2)
             return self.enable_timeout("expedition_result.png", loop=3, timeout=1)
         else:
