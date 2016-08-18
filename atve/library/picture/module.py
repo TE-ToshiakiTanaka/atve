@@ -86,10 +86,16 @@ class Picture(object):
     @classmethod
     def resize(cls, pic, size):
         width, height = pic.size
-        if size == "480P": sz = ((width * 480) / height, 480)
-        elif size == "720P": sz = ((width * 720) / height, 720)
-        elif size == "1080P": sz = ((width * 1080) / height, 1080)
-        else: return
+        if width > height:
+            if size == "480P": sz = ((width * 480) / height, 480)
+            elif size == "720P": sz = ((width * 720) / height, 720)
+            elif size == "1080P": sz = ((width * 1080) / height, 1080)
+            else: return
+        else:
+            if size == "480P": sz = (480, ((height * 480) / width)
+            elif size == "720P": sz =   (720, ((height * 720) / width)
+            elif size == "1080P": sz = (1080, (height * 1080) / width)
+            else: return
         cls.L.info("size : %s" % str(sz))
         return pic.resize(sz)
 
