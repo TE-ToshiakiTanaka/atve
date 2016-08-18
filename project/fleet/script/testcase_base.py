@@ -33,6 +33,8 @@ class TestCase_Unit(AtveTestCase):
                             help='Timeout.')
         parser.add_argument('-u', action='store', dest='url',
                             help='target Jenkins URL.')
+        parser.add_argument('-s', action='store', dest='slack',
+                            help='target slack api token.')
         return parser
 
     @classmethod
@@ -40,6 +42,7 @@ class TestCase_Unit(AtveTestCase):
          cls.adb = cls.service["atve.android"].get(cls.get("args.mobile"), PROFILE_DIR)
          # cls.browser = cls.service["atve.browser"].get()
          cls.picture = cls.service["atve.picture"].get()
+         # cls.slack = cls.service["atve.slack"].get(cls.get("args.slack"))
 
     @classmethod
     def get_config(cls, conf=""):
