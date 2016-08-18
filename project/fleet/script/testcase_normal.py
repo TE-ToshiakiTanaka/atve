@@ -82,9 +82,11 @@ class TestCase(testcase.TestCase_Base):
         if not self.enable_timeout(self.__attack_fleet_focus(fleet), loop=3, timeout=1):
             self.tap_timeout(self.__attack_fleet(fleet)); time.sleep(1)
         if self.enable_timeout("attack_unable.png", loop=2, timeout=1):
+            self.slack.message(self.get("kancolle_bot.attack_failed"), self.get("args.channel"))
             self.home()
             return False
         self.tap_timeout("attack_start.png"); time.sleep(10)
+        self.slack.message(self.get("kancolle_bot.attack_success"), self.get("args.channel"))
         return self.enable_timeout("attack_compass.png")
 
     def __attack_stage(self, id):
