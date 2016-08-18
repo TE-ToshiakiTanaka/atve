@@ -126,6 +126,7 @@ class TestCase(testcase.TestCase_Base):
                 self.slack.upload(fname, self.get("args.channel"))
                 self.tap_timeout("return.png", loop=3, timeout=2)
         self.tap_timeout("attack_withdrawal.png"); time.sleep(5)
+        self.slack.message(self.get("kancolle_bot.attack_return"), self.get("args.channel"))
         return self.enable_timeout("home.png")
 
     def exercises(self):
