@@ -16,8 +16,8 @@ class Factory(object):
     def version(self):
         return __version__
 
-    def get(self):
-        return Slack()
+    def get(self, token):
+        return Slack(token)
 
 NAME = "atve.slack"
 FACTORY = Factory()
