@@ -166,7 +166,9 @@ class TestCase(testcase.TestCase_Base):
                             time.sleep(1)
                         time.sleep(10)
                     target = self.adb_screenshot(self.adb.get().TMP_PICTURE)
-                    if self.enable_timeout("d.png", target): self.slack.message(self.get("kancolle_bot.result_d"), self.get("args.channel"))
+                    if self.enable_timeout("d.png", target, loop=2, timeout=1): self.slack.message(self.get("kancolle_bot.result_d"), self.get("args.channel"))
+                    if self.enable_timeout("c.png", target, loop=2, timeout=1): self.slack.message(self.get("kancolle_bot.result_c"), self.get("args.channel"))
+                    else : self.slack.message(self.get("kancolle_bot.result_s"), self.get("args.channel"))
                     while self.tap_timeout("next.png", loop=3, timeout=2): time.sleep(5)
                     break
             if self.adb.get().LOCATE == "V":
