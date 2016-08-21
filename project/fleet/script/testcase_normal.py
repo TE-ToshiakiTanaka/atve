@@ -26,6 +26,7 @@ class TestCase(testcase.TestCase_Base):
         self.tap_timeout("action_supply.png"); self.sleep()
         if not self.enable_timeout(self.__supply_fleet_focus(fleet), loop=2, timeout=2):
             self.tap_timeout(self.__supply_fleet(fleet)); self.sleep()
+        self.message(self.get("bot.supply") % fleet)
         self.tap_timeout("supply_all.png"); self.sleep()
         return True
 
@@ -39,13 +40,18 @@ class TestCase(testcase.TestCase_Base):
         if not self.enable_timeout("home.png"):
             return False
         self.tap_timeout("action_docking.png"); self.sleep()
+        self.message(self.get("bot.docking"))
         for _ in range(2):
             position = self.find("docking_room.png")
             if position == None: break
             self.tap_timeout("docking_room.png", loop=2, timeout=1)
             time.sleep(3); result = self.__docking()
             self._tap(position)
-            if not result: return True
+            if not result: break
+        fname = self.adb_screenshot("docking_%s.png" % self.adb.get().SERIAL)
+        if self.adb.get().LOCATE == "V":
+            self.picture_rotate(fname, "90")
+        self.picture_resize(fname, "480P"); self.upload(fname)
         return True
 
     def __docking(self):
@@ -147,7 +153,7 @@ class TestCase(testcase.TestCase_Base):
                 L.info(p);
                 while not self.enable_timeout("exercises_start.png", loop=3, timeout=2):
                     self._tap(p); time.sleep(3)
-                fname = self.adb_screenshot("drop_%s.png" % self.adb.get().SERIAL)
+                fname = self.adb_screenshot("exercises_%s.png" % self.adb.get().SERIAL)
                 if self.adb.get().LOCATE == "V":
                     self.picture_rotate(fname, "90")
                 self.picture_resize(fname, "480P")
@@ -166,17 +172,28 @@ class TestCase(testcase.TestCase_Base):
                         time.sleep(10)
                     target = self.adb_screenshot(self.adb.get().TMP_PICTURE)
                     if self.enable_timeout("d.png", target, loop=2, timeout=1): self.message(self.get("bot.result_d"))
-                    if self.enable_timeout("c.png", target, loop=2, timeout=1): self.message(self.get("bot.result_c"))
-                    if self.enable_timeout("b.png", target, loop=2, timeout=1): self.message(self.get("bot.result_b"))
+                    elif self.enable_timeout("c.png", target, loop=2, timeout=1): self.message(self.get("bot.result_c"))
+                    elif self.enable_timeout("b.png", target, loop=2, timeout=1): self.message(self.get("bot.result_b"))
+                    elif self.enable_timeout("a.png", target, loop=2, timeout=1): self.message(self.get("bot.result_a"))
                     else : self.message(self.get("bot.result_s"))
                     while self.tap_timeout("next.png", loop=3, timeout=2): time.sleep(5)
                     break
             if self.adb.get().LOCATE == "V":
                 p.x = int(p.x) - int(p.width); L.info("Point : %s" % str(p))
-                if int(p.x) < 0: self.home(); return False
+                if int(p.x) < 0:
+                    fname = self.adb_screenshot("%s.png" % self.adb.get().SERIAL)
+                    self.picture_rotate(fname, "90"); self.picture_resize(fname, "480P")
+                    self.message(self.get("bot.exercises_result"))
+                    self.upload(fname)
+                    self.home(); return False
             else:
                 p.y = int(p.y) + int(p.height); L.info("Point : %s" % str(p))
-                if int(p.y) > int(self.adb.get().HEIGHT): return False
+                if int(p.y) > int(self.adb.get().HEIGHT):
+                    fname = self.adb_screenshot("%s.png" % self.adb.get().SERIAL)
+                    self.picture_resize(fname, "480P")
+                    self.message(self.get("bot.exercises_result"))
+                    self.upload(fname)
+                    self.home(); return False
         time.sleep(3)
         return self.enable_timeout("home.png")
 
@@ -186,19 +203,32 @@ class TestCase(testcase.TestCase_Base):
             return False
         self.tap_timeout("action_sortie.png"); self.sleep()
         self.tap_timeout("sortie_expedition.png"); self.sleep()
-        self.__expedition_stage(id); self.sleep()
+        self.__expedition_stage(id)
         self.tap_timeout(self.__expedition_id(id)); self.sleep()
         if self.enable_timeout("expedition_done.png", loop=2, timeout=2):
+            self.message(self.get("bot.expedition_done") % self.get("args.fleet"))
             return True
         self.tap_timeout("expedition_decide.png"); self.sleep()
         if not self.enable_timeout(self.__expedition_fleet_focus(fleet), loop=2, timeout=2):
             self.tap_timeout(self.__expedition_fleet(fleet)); self.sleep()
         if self.enable_timeout("expedition_unable.png", loop=2, timeout=2):
+            self.message(self.get("bot.expedition_unable") % self.get("args.fleet"))
             self.home()
             return False
         self.tap_timeout("expedition_start.png"); self.sleep()
-        return self.enable_timeout("expedition_done.png")
-
+        if self.enable_timeout("expedition_done.png"):
+            self.message(self.get("bot.expedition_start") % self.get("args.fleet"))
+            time.sleep(5)
+            fname = self.adb_screenshot(self.adb.get().TMP_PICTURE)
+            if self.adb.get().LOCATE == "V":
+                self.picture_rotate(fname, "90")
+            self.picture_resize(fname, "480P")
+            self.upload(fname)
+            return True
+        else:
+            self.message(self.get("bot.expedition_unable") % self.get("args.fleet"))
+            self.home()
+            return False
 
     def __expedition_id(self, id):
         return "expedition_%s.png" % id

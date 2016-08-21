@@ -120,11 +120,11 @@ class TestCase_Base(testcase_android.TestCase_Android,
 
     def _tap(self, result):
         if self.adb.get().LOCATE == "H":
-            x = int(result.x) + random.randint(int(int(result.width) * 0.1) , int(int(result.width) * 0.9))
-            y = int(result.y) + random.randint(int(int(result.height) * 0.1) , int(int(result.height) * 0.9))
+            x = int(result.x) + random.randint(int(int(result.width) * 0.2) , int(int(result.width) * 0.8))
+            y = int(result.y) + random.randint(int(int(result.height) * 0.2) , int(int(result.height) * 0.8))
         else:
-            x = int(result.y) + random.randint(int(int(result.height) * 0.1) , int(int(result.height) * 0.9))
-            y = int(self.adb.get().WIDTH) - (int(result.x) + random.randint(int(int(result.width) * 0.1) , int(int(result.width) * 0.9)))
+            x = int(result.y) + random.randint(int(int(result.height) * 0.2) , int(int(result.height) * 0.8))
+            y = int(self.adb.get().WIDTH) - (int(result.x) + random.randint(int(int(result.width) * 0.2) , int(int(result.width) * 0.8)))
         return self.adb_tap(x, y)
 
     def message(self, message):

@@ -19,6 +19,7 @@ class TestCase(testcase_normal.TestCase):
 
         self.assertTrue(self.initialize())
         while self.expedition_result(): time.sleep(3)
+        self.message(self.get("bot.attack"))
         self.assertTrue(self.attack(self.get("args.fleet"), self.get("args.attack")))
         self.assertTrue(self.battle())
         while self.expedition_result(): time.sleep(3)

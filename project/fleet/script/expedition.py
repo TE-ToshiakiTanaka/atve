@@ -18,6 +18,7 @@ class TestCase(testcase_normal.TestCase):
         L.info("*** Expedition ***")
         self.assertTrue(self.initialize())
         while self.expedition_result(): time.sleep(3)
+        self.message(self.get("bot.expedition") % self.get("args.fleet"))
         self.assertTrue(self.supply(self.get("args.fleet")))
         self.assertTrue(self.home())
         self.assertTrue(self.expedition(
