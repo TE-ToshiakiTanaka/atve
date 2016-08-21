@@ -126,3 +126,9 @@ class TestCase_Base(testcase_android.TestCase_Android,
             x = int(result.y) + random.randint(int(int(result.height) * 0.1) , int(int(result.height) * 0.9))
             y = int(self.adb.get().WIDTH) - (int(result.x) + random.randint(int(int(result.width) * 0.1) , int(int(result.width) * 0.9)))
         return self.adb_tap(x, y)
+
+    def message(self, message):
+        self.slack.message(message, self.get("args.channel"))
+
+    def upload(self, filepath):
+        self.slack.upload(filepath, self.get("args.channel"))

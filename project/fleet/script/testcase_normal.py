@@ -82,11 +82,11 @@ class TestCase(testcase.TestCase_Base):
         if not self.enable_timeout(self.__attack_fleet_focus(fleet), loop=3, timeout=1):
             self.tap_timeout(self.__attack_fleet(fleet)); time.sleep(1)
         if self.enable_timeout("attack_unable.png", loop=2, timeout=1):
-            self.slack.message(self.get("kancolle_bot.attack_failed"), self.get("args.channel"))
+            self.message(self.get("bot.attack_failed"))
             self.home()
             return False
         self.tap_timeout("attack_start.png"); time.sleep(10)
-        self.slack.message(self.get("kancolle_bot.attack_success"), self.get("args.channel"))
+        self.message(self.get("bot.attack_success"))
         return self.enable_timeout("attack_compass.png")
 
     def __attack_stage(self, id):
@@ -122,11 +122,10 @@ class TestCase(testcase.TestCase_Base):
                 fname = self.adb_screenshot("drop_%s.png" % self.adb.get().SERIAL)
                 if self.adb.get().LOCATE == "V":
                     self.picture_rotate(fname, "90")
-                self.picture_resize(fname, "480P")
-                self.slack.upload(fname, self.get("args.channel"))
+                self.picture_resize(fname, "480P"); self.upload(fname)
                 self.tap_timeout("return.png", loop=3, timeout=2)
         self.tap_timeout("attack_withdrawal.png"); time.sleep(5)
-        self.slack.message(self.get("kancolle_bot.attack_return"), self.get("args.channel"))
+        self.message(self.get("bot.attack_return"))
         return self.enable_timeout("home.png")
 
     def exercises(self):
@@ -155,20 +154,21 @@ class TestCase(testcase.TestCase_Base):
                 self.tap_timeout("exercises_start.png", loop=3, timeout=1); self.sleep()
                 if self.enable_timeout("exercises_unable.png", loop=3, timeout=1):
                     return False
-                self.slack.upload(fname, self.get("args.channel"))
+                self.upload(fname)
                 if self.tap_timeout("exercises_attack.png", loop=3, timeout=1):
-                    self.slack.message(self.get("kancolle_bot.exercises_start"), self.get("args.channel"))
+                    self.message(self.get("bot.exercises_start"))
                     self.sleep()
                     while not self.enable_timeout("next.png", loop=3, timeout=2):
                         if self.tap_timeout("trail_formation.png", loop=3, timeout=1): self.sleep()
                         if self.tap_timeout("night_battle_start.png"):
-                            self.slack.message(self.get("kancolle_bot.night_battle_start"), self.get("args.channel"))
+                            self.message(self.get("bot.night_battle_start"))
                             time.sleep(1)
                         time.sleep(10)
                     target = self.adb_screenshot(self.adb.get().TMP_PICTURE)
-                    if self.enable_timeout("d.png", target, loop=2, timeout=1): self.slack.message(self.get("kancolle_bot.result_d"), self.get("args.channel"))
-                    if self.enable_timeout("c.png", target, loop=2, timeout=1): self.slack.message(self.get("kancolle_bot.result_c"), self.get("args.channel"))
-                    else : self.slack.message(self.get("kancolle_bot.result_s"), self.get("args.channel"))
+                    if self.enable_timeout("d.png", target, loop=2, timeout=1): self.message(self.get("bot.result_d"))
+                    if self.enable_timeout("c.png", target, loop=2, timeout=1): self.message(self.get("bot.result_c"))
+                    if self.enable_timeout("b.png", target, loop=2, timeout=1): self.message(self.get("bot.result_b"))
+                    else : self.message(self.get("bot.result_s"))
                     while self.tap_timeout("next.png", loop=3, timeout=2): time.sleep(5)
                     break
             if self.adb.get().LOCATE == "V":
@@ -221,15 +221,15 @@ class TestCase(testcase.TestCase_Base):
             self.tap_timeout("expedition_result.png"); time.sleep(7)
             self.adb_screenshot(self.adb.get().TMP_PICTURE)
             if self.enable_timeout("expedition_success.png", loop=2, timeout=1):
-                self.slack.message(self.get("kancolle_bot.expedition_success"), self.get("args.channel"))
+                self.message(self.get("bot.expedition_success"))
             elif self.enable_timeout("expedition_failed.png", loop=2, timeout=1):
-                self.slack.message(self.get("kancolle_bot.expedition_failed"), self.get("args.channel"))
+                self.message(self.get("bot.expedition_failed"))
             self.tap_timeout("next.png"); time.sleep(2)
             fname = self.adb_screenshot(self.adb.get().TMP_PICTURE)
             if self.adb.get().LOCATE == "V":
                 self.picture_rotate(fname, "90")
             self.picture_resize(fname, "480P")
-            self.slack.upload(fname, self.get("args.channel"))
+            self.upload(fname)
             self.tap_timeout("next.png"); time.sleep(2)
             return self.enable_timeout("expedition_result.png", loop=3, timeout=1)
         else:

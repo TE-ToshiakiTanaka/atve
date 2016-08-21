@@ -18,7 +18,7 @@ class TestCase(testcase_normal.TestCase):
         L.info("*** Exercises ***")
         self.assertTrue(self.initialize())
         while self.expedition_result(): time.sleep(3)
-        self.slack.message(self.get("kancolle_bot.exercises"), self.get("args.channel"))
+        self.message(self.get("bot.exercises"))
         self.assertTrue(self.exercises())
         while self.expedition_result(): time.sleep(3)
         self.assertTrue(self.supply(self.get("args.fleet")))
