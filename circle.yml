@@ -9,12 +9,14 @@ machine:
 
 dependencies:
     pre:
-        - sudo apt-get update; sudo apt-get install xvfb
-        - sudo apt-get install google-chrome-stable
+        - sudo apt-get update
+        - sudo apt-get install xvfb
+        - sudo apt-get install firefox google-chrome-stable
         - export DISPLAY=':99.0'
         - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
         - /bin/bash opencv_install.sh
+        - /bin/bash opencv_setup.sh
         - pip -V
         - pip install -U setuptools
         - pip install -U ipdb
