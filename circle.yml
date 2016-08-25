@@ -13,7 +13,7 @@ dependencies:
         - pip -V
         - pip install -U setuptools
         - pip install -U ipdb
-        - pip install -U -r requirements-travis.txt
+        - pip install -U -r requirements-tox.txt
         - pyenv local $TOX_PY27 $TOX_PY34 $TOX_PY35
 
 test:
