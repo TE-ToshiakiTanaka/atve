@@ -8,8 +8,8 @@ if [ -e $SITE_PACKAGES/cv2.so ]; then
 else
     ln -s $OPENCVPATH/cv2.so cv2.so
 fi
-if [ -e $SITE_PACKAGES/cv.py ]; then
+if [ -e $SITE_PACKAGES/cv.pyc ]; then
     :
 else
-    ln -s $OPENCVPATH/cv.py cv.py
+    ln -s $OPENCVPATH/cv.pyc cv.pyc
 fi
