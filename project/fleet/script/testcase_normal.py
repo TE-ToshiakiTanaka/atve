@@ -70,7 +70,7 @@ class TestCase(testcase.TestCase_Base):
             return False
         self.tap_timeout("action_docking.png"); self.sleep()
         self.message(self.get("bot.docking"))
-        for _ in range(2):
+        for _ in range(3):
             position = self.find("docking_room.png")
             if position == None: break
             self.tap_timeout("docking_room.png", loop=2, timeout=1)
