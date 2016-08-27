@@ -8,17 +8,41 @@ from fleet.script import testcase
 
 class TestCase(testcase.TestCase_Base):
 
-    def initialize(self):
+    def initialize(self, form=None):
         if self.enable_timeout("home.png"):
             self.tap_timeout("action_formation.png"); self.sleep()
-            return self.home()
+            if form == None:
+                return self.home()
+            else:
+                return self.formation(form)
         else:
             self.adb.stop("com.dmm.dmmlabo.kancolle/.AppEntry")
             time.sleep(5)
             self.adb.invoke("com.dmm.dmmlabo.kancolle/.AppEntry"); self.sleep()
             self.tap_timeout("start_music_off.png", timeout=2); self.sleep()
             self.tap_timeout("start_game.png", timeout=2); self.sleep()
-            return self.enable_timeout("home.png")
+            while self.expedition_result(): self.sleep()
+            if form == None:
+                return self.enable_timeout("home.png")
+            else:
+                self.tap_timeout("action_formation.png"); self.sleep()
+                return self.formation(form)
+
+    def formation(self, formation):
+        self.tap_timeout("formation_change.png"); self.sleep()
+        if not self.enable_timeout("formation_deploy.png", loop=3, timeout=1):
+            return False
+        if formation == None: return False
+        fleet = int(formation) % 3
+        p = POINT(int(self.adb.get().FORMATION_X) - (int(self.adb.get().FORMATION_WIDTH) * fleet),
+                  int(self.adb.get().FORMATION_Y),
+                  int(self.adb.get().FORMATION_WIDTH),
+                  int(self.adb.get().FORMATION_HEIGHT))
+        L.info(p);
+        if not self.enable_timeout("formation_fleet_1_focus.png", loop=2, timeout=2):
+            self.tap_timeout("formation_fleet_1.png"); self.sleep()
+        self.tap_timeout_crop("formation_select.png", p); self.sleep()
+        return self.home()
 
     def supply(self, fleet):
         if not self.enable_timeout("home.png"):

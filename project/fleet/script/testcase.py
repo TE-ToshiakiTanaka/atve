@@ -106,6 +106,27 @@ class TestCase_Base(testcase_android.TestCase_Android,
         target = self.adb.get().TMP_PICTURE
         return self.tap(reference, target)
 
+    def tap_timeout_crop(self, reference, point, filename=None, loop=5, timeout=5):
+        if filename == None:
+            filename = self.adb_screenshot(self.adb.get().TMP_PICTURE)
+        target = self.picture_crop(filename, point,
+            self.get_target("crop_%s" % self.adb.get().TMP_PICTURE))
+        return self.tap_crop_inside(reference, target, point)
+
+    def tap_crop_inside(self, reference, target, point):
+        if target == None:
+            return False
+        result = self.picture_find_pattern(
+            self.get_target(target), self.get_reference(reference))
+        if not result == None:
+            result.x = int(result.x) + int(point.x)
+            result.y = int(result.y) + int(point.y)
+            L.info("Target Point : %s" % result)
+            L.info(self._tap(result))
+            return True
+        else:
+            return False
+
     def tap(self, reference, target=None):
         if target == None:
             self.adb_screenshot(self.adb.get().TMP_PICTURE)

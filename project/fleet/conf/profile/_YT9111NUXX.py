@@ -24,5 +24,10 @@ class _YT9111NUXX(Android):
     DOCKING_WIDTH = "67"
     DOCKING_HEIGHT = "750"
 
+    FORMATION_X = "395"
+    FORMATION_Y = "210"
+    FORMATION_WIDTH = "75"
+    FORMATION_HEIGHT = "305"
+
 if __name__ == "__main__":
     print(eval("_YT9111NUXX.%s" % "TMP_PICTURE"))

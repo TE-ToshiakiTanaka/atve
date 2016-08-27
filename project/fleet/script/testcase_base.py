@@ -23,6 +23,8 @@ class TestCase_Unit(AtveTestCase):
                             help='Mobile (Android) Serial ID.')
         parser.add_argument('-f', action='store', dest='fleet',
                             help='Fleet Number. (1 ~ 4)')
+        parser.add_argument('-d', action='store', dest='deploy',
+                            help='Deploy Fleet Number.')
         parser.add_argument('-e', action='store', dest='expedition',
                             help='Expedition ID.')
         parser.add_argument('-a', action='store', dest='attack',

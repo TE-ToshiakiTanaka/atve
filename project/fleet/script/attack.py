@@ -17,7 +17,7 @@ class TestCase(testcase_normal.TestCase):
     def test_exercises(self):
         L.info("*** Exercises ***")
 
-        self.assertTrue(self.initialize())
+        self.assertTrue(self.initialize(self.get("args.deploy")))
         while self.expedition_result(): time.sleep(3)
         self.message(self.get("bot.attack"))
         self.assertTrue(self.attack(self.get("args.fleet"), self.get("args.attack")))
