@@ -42,6 +42,7 @@ class TestCase(testcase.TestCase_Base):
         if not self.enable_timeout("formation_fleet_1_focus.png", loop=2, timeout=2):
             self.tap_timeout("formation_fleet_1.png"); self.sleep()
         self.tap_timeout_crop("formation_select.png", p); self.sleep()
+        time.sleep(3)
         fname = self.adb_screenshot("formation_%s.png" % self.adb.get().SERIAL)
         if self.adb.get().LOCATE == "V":
             self.picture_rotate(fname, "90")
@@ -91,7 +92,7 @@ class TestCase(testcase.TestCase_Base):
                   int(self.adb.get().DOCKING_HEIGHT))
         for _ in range(7):
             L.info(p)
-            self._tap(p); time.sleep(3)
+            self._tap(p); time.sleep(5)
             if self.enable_timeout("docking_unable.png", loop=3, timeout=1):
                 self._tap(p); time.sleep(3)
             elif self.tap_timeout("docking_start.png", loop=3, timeout=1):
