@@ -42,6 +42,10 @@ class TestCase(testcase.TestCase_Base):
         if not self.enable_timeout("formation_fleet_1_focus.png", loop=2, timeout=2):
             self.tap_timeout("formation_fleet_1.png"); self.sleep()
         self.tap_timeout_crop("formation_select.png", p); self.sleep()
+        fname = self.adb_screenshot("formation_%s.png" % self.adb.get().SERIAL)
+        if self.adb.get().LOCATE == "V":
+            self.picture_rotate(fname, "90")
+        self.picture_resize(fname, "480P"); self.upload(fname)
         return self.home()
 
     def supply(self, fleet):
