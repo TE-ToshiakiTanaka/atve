@@ -75,7 +75,8 @@ class TestCase(testcase.TestCase_Base):
             if position == None: break
             self.tap_timeout("docking_room.png", loop=2, timeout=1)
             time.sleep(3); result = self.__docking()
-            self._tap(position)
+            self._tap(position, threshold=0.49)
+            self.sleep()
             if not result: break
         fname = self.adb_screenshot("docking_%s.png" % self.adb.get().SERIAL)
         if self.adb.get().LOCATE == "V":
@@ -91,11 +92,12 @@ class TestCase(testcase.TestCase_Base):
                   int(self.adb.get().DOCKING_WIDTH),
                   int(self.adb.get().DOCKING_HEIGHT))
         for _ in range(7):
-            L.info(p)
-            self._tap(p); time.sleep(5)
+            L.info(p); self.sleep()
+            self._tap(p, threshold=0.49); time.sleep(5)
             if self.enable_timeout("docking_unable.png", loop=3, timeout=1):
-                self._tap(p); time.sleep(3)
+                self.sleep(); self._tap(p, threshold=0.49); time.sleep(3)
             elif self.tap_timeout("docking_start.png", loop=3, timeout=1):
+                self.sleep()
                 if self.tap_timeout("docking_yes.png", loop=3, timeout=1):
                     time.sleep(10); return True
             if self.adb.get().LOCATE == "V":
@@ -104,7 +106,7 @@ class TestCase(testcase.TestCase_Base):
             else:
                 p.y = int(p.y) + int(p.height)
                 if int(p.y) > int(self.adb.get().HEIGHT): return False
-        return True
+        return False
 
     def attack(self, fleet, id):
         if not self.enable_timeout("home.png"):
@@ -186,7 +188,7 @@ class TestCase(testcase.TestCase_Base):
             else:
                 L.info(p);
                 while not self.enable_timeout("exercises_start.png", loop=3, timeout=2):
-                    self._tap(p); time.sleep(3)
+                    self._tap(p, threshold=0.49); time.sleep(3)
                 fname = self.adb_screenshot("exercises_%s.png" % self.adb.get().SERIAL)
                 if self.adb.get().LOCATE == "V":
                     self.picture_rotate(fname, "90")
