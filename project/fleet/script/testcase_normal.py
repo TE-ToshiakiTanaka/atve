@@ -120,6 +120,10 @@ class TestCase(testcase.TestCase_Base):
             self.message(self.get("bot.attack_failed"))
             self.home()
             return False
+        if self.enable_pattern("attack_rack*", loop=1):
+            self.message(self.get("bot.attack_rack")); self.home(); return True
+        if self.enable_pattern("attack_damage*", loop=1):
+            self.message(self.get("bot.attack_damage")); self.home(); return True
         self.tap_timeout("attack_start.png"); time.sleep(10)
         self.message(self.get("bot.attack_success"))
         return self.enable_timeout("attack_compass.png")
@@ -142,7 +146,8 @@ class TestCase(testcase.TestCase_Base):
 
     def battle(self):
         if not self.enable_timeout("attack_compass.png"):
-            return False
+            if self.enable_timeout("home.png"): return True
+            else: return False
         self.tap_timeout("attack_compass.png")
         while not self.enable_timeout("next.png", loop=3, timeout=2):
             target = self.adb.get().TMP_PICTURE

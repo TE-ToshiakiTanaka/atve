@@ -46,10 +46,12 @@ class TestCase_Base(testcase_android.TestCase_Android,
                 return True
         return False
 
-    def enable_pattern(self, pattern, loop=3, timeout=0.5):
-        targets = self.__search_pattern(pattern)
-        for target in targets:
-            if self.enable_timeout(target, loop=loop, timeout=timeout):
+    def enable_pattern(self, pattern, target=None, loop=3, timeout=0.5):
+        if target == None:
+            target = self.adb_screenshot(self.adb.get().TMP_PICTURE)
+        references = self.__search_pattern(pattern)
+        for reference in references:
+            if self.enable_timeout(reference, target, loop=loop, timeout=timeout):
                 return True
         return False
 
