@@ -143,7 +143,7 @@ class TestCase_Base(testcase_android.TestCase_Android,
 
     def _tap(self, result, threshold=0.2):
         if self.adb.get().LOCATE == "H":
-            x = int(result.x) + random.randint(int(int(result.width) * threshhold) , int(int(result.width) * (1.0 - threshold)))
+            x = int(result.x) + random.randint(int(int(result.width) * threshold) , int(int(result.width) * (1.0 - threshold)))
             y = int(result.y) + random.randint(int(int(result.height) * threshold) , int(int(result.height) * (1.0 - threshold)))
         else:
             x = int(result.y) + random.randint(int(int(result.height) * threshold) , int(int(result.height) * (1.0 - threshold)))

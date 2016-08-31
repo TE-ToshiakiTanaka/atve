@@ -34,10 +34,16 @@ class TestCase(testcase.TestCase_Base):
             return False
         if formation == None: return False
         fleet = int(formation) % 3
-        p = POINT(int(self.adb.get().FORMATION_X) - (int(self.adb.get().FORMATION_WIDTH) * fleet),
-                  int(self.adb.get().FORMATION_Y),
-                  int(self.adb.get().FORMATION_WIDTH),
-                  int(self.adb.get().FORMATION_HEIGHT))
+        if self.adb.get().LOCATE == "V":
+            p = POINT(int(self.adb.get().FORMATION_X) - (int(self.adb.get().FORMATION_WIDTH) * fleet),
+                      int(self.adb.get().FORMATION_Y),
+                      int(self.adb.get().FORMATION_WIDTH),
+                      int(self.adb.get().FORMATION_HEIGHT))
+        else:
+            p = POINT(int(self.adb.get().FORMATION_X),
+                      int(self.adb.get().FORMATION_Y) + (int(self.adb.get().FORMATION_HEIGHT) * fleet),
+                      int(self.adb.get().FORMATION_WIDTH),
+                      int(self.adb.get().FORMATION_HEIGHT))
         L.info(p);
         if not self.enable_timeout("formation_fleet_1_focus.png", loop=2, timeout=2):
             self.tap_timeout("formation_fleet_1.png"); self.sleep()
@@ -201,7 +207,7 @@ class TestCase(testcase.TestCase_Base):
                     self.message(self.get("bot.exercises_start"))
                     self.sleep()
                     while not self.enable_timeout("next.png", loop=3, timeout=2):
-                        if self.tap_timeout("trail_formation.png", loop=3, timeout=1): self.sleep()
+                        if self.tap_timeout("attack_formation_1.png", loop=3, timeout=1): self.sleep()
                         if self.tap_timeout("night_battle_start.png"):
                             self.message(self.get("bot.night_battle_start"))
                             time.sleep(1)
