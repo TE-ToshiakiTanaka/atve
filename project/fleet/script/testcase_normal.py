@@ -98,8 +98,8 @@ class TestCase(testcase.TestCase_Base):
                   int(self.adb.get().DOCKING_WIDTH),
                   int(self.adb.get().DOCKING_HEIGHT))
         for _ in range(7):
-            L.info(p); self.sleep()
-            self._tap(p, threshold=0.49); time.sleep(5)
+            L.info(p); self.sleep(base=1)
+            self._tap(p, threshold=0.49); time.sleep(3)
             if self.enable_timeout("docking_unable.png", loop=2, timeout=0.5):
                 self.sleep(base=1); self._tap(p, threshold=0.49); self.sleep(base=1)
             elif self.tap_timeout("docking_start.png", loop=2, timeout=0.5):
