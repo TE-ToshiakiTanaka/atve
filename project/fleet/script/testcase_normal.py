@@ -100,12 +100,12 @@ class TestCase(testcase.TestCase_Base):
         for _ in range(7):
             L.info(p); self.sleep()
             self._tap(p, threshold=0.49); time.sleep(5)
-            if self.enable_timeout("docking_unable.png", loop=3, timeout=1):
-                self.sleep(); self._tap(p, threshold=0.49); time.sleep(3)
-            elif self.tap_timeout("docking_start.png", loop=3, timeout=1):
-                self.sleep()
-                if self.tap_timeout("docking_yes.png", loop=3, timeout=1):
-                    time.sleep(10); return True
+            if self.enable_timeout("docking_unable.png", loop=2, timeout=0.5):
+                self.sleep(base=1); self._tap(p, threshold=0.49); self.sleep(base=1)
+            elif self.tap_timeout("docking_start.png", loop=2, timeout=0.5):
+                self.sleep(base=1)
+                if self.tap_timeout("docking_yes.png", loop=2, timeout=0.5):
+                    self.sleep(base=3); return True
             if self.adb.get().LOCATE == "V":
                 p.x = int(p.x) - int(p.width)
                 if int(p.x) < 0: return False
