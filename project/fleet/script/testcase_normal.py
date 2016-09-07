@@ -164,14 +164,14 @@ class TestCase(testcase.TestCase_Base):
             if self.tap_timeout("night_battle_stop.png", target, loop=3, timeout=1):
                 self.sleep(); self.adb_screenshot(self.adb.get().TMP_PICTURE)
             time.sleep(10)
-        while self.tap_timeout("next.png", loop=3, timeout=2): time.sleep(5)
-        while not self.enable_timeout("attack_withdrawal.png", loop=3, timeout=2):
+        while self.tap_timeout("next.png", loop=3, timeout=2): self.sleep(base=2)
+        while not self.enable_timeout("attack_withdrawal.png", loop=3, timeout=0.5):
             if self.enable_timeout("return.png", loop=3, timeout=1):
                 fname = self.adb_screenshot("drop_%s.png" % self.adb.get().SERIAL)
                 if self.adb.get().LOCATE == "V":
                     self.picture_rotate(fname, "90")
                 self.picture_resize(fname, "480P"); self.upload(fname)
-                self.tap_timeout("return.png", loop=3, timeout=2)
+                self.tap_timeout("return.png", loop=3, timeout=0.5)
         self.tap_timeout("attack_withdrawal.png"); time.sleep(5)
         self.message(self.get("bot.attack_return"))
         return self.enable_timeout("home.png")
