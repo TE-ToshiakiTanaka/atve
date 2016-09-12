@@ -137,10 +137,10 @@ class TestCase(testcase.TestCase_Base):
         return self.enable_timeout("attack_compass.png")
 
     def __attack_stage(self, id):
-        if int(id) > 24: self.tap_timeout("attack_stage_5.png"); time.sleep(1)
-        elif int(id) > 18: self.tap_timeout("attack_stage_4.png"); time.sleep(1)
-        elif int(id) > 12: self.tap_timeout("attack_stage_3.png"); time.sleep(1)
-        elif int(id) > 6: self.tap_timeout("attack_stage_2.png"); time.sleep(1)
+        if int(id) > 24: self.tap_timeout("attack_stage_5.png", threshold=0.49); time.sleep(1)
+        elif int(id) > 18: self.tap_timeout("attack_stage_4.png", threshold=0.49); time.sleep(1)
+        elif int(id) > 12: self.tap_timeout("attack_stage_3.png", threshold=0.49); time.sleep(1)
+        elif int(id) > 6: self.tap_timeout("attack_stage_2.png", threshold=0.49); time.sleep(1)
         else: pass
 
     def __attack_id(self, id):
