@@ -7,7 +7,7 @@ from atve.exception import *
 SHARPNESS = 2.0
 CONTRAST = 2.0
 
-PMC_THRESHOLD = 0.96
+PMC_THRESHOLD = 0.98
 
 try :
     from PIL import Image
