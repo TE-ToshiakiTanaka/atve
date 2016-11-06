@@ -39,6 +39,10 @@ class TestCase_Unit(AtveTestCase):
                             help='target slack api token.')
         parser.add_argument('-c', action='store', dest='channel',
                             help='target slack channel.')
+        parser.add_argument('-i', action='store', dest='userid',
+                            help='jenkins userid.')
+        parser.add_argument('-p', action='store', dest='password',
+                            help='jenkins api token.')
         return parser
 
     @classmethod

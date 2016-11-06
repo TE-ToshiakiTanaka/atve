@@ -10,7 +10,7 @@ if not PROFILE_PATH in sys.path:
     sys.path.insert(0, PROFILE_PATH)
 
 from atve.log import Log
-from atve.cmd import run
+from atve.cmd import run, run_ab
 from atve.exception import *
 
 TIMEOUT = 30

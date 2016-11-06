@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import urllib2
+import base64
 import time
 
 from fleet.utility import *
@@ -19,6 +20,9 @@ class TestCase(testcase_normal.TestCase):
     def test_step_1(self):
         result = False
         try:
+            username = self.get("args.userid")
+            token = self.get("args.password")
+
             url = "%s/job/%s/api/json" % (self.get("args.url"), self.get("args.job"))
             L.info(url)
             r = urllib2.urlopen(url)
@@ -37,9 +41,14 @@ class TestCase(testcase_normal.TestCase):
         else:
             L.debug("Retry.")
         try:
-            url2 = "%s/job/%s/build?delay=0sec" % (self.get("args.url"), self.get("args.job"))
+            url2 = "%s/job/%s/build?token=%s&delay=0sec" % (self.get("args.url"), self.get("args.job"), self.get("args.job"))
             L.info(url2)
-            r2 = urllib2.urlopen(url2)
+
+            request = urllib2.Request(url2)
+            base64string = base64.encodestring('%s:%s' % (username, token)).replace('\n', '')
+            request.add_header("Authorization", "Basic %s" % base64string)
+
+            r2 = urllib2.urlopen(request)
             L.debug("HTTP Status Code : %d" % r2.getcode())
             self.assertTrue(r2.getcode() == 201)
         finally:

@@ -2,6 +2,8 @@ import os
 import sys
 import time
 
+from atve.cmd import run_ab
+
 from fleet.utility import *
 from fleet.utility import LOG as L
 from fleet.script import testcase_normal
@@ -16,11 +18,14 @@ class TestCase(testcase_normal.TestCase):
 
     def test_1(self):
         L.info("*** Test 01 ***")
+        run_ab("adb -s YT911C1ZCP shell screencap -p /sdcard/capture.png", shell=True)
+        run_ab("adb -s YT911C1ZCP pull /sdcard/capture.png %s" % TMP_DIR, shell=True)
+        run_ab("adb -s YT911C1ZCP rm /sdcard/capture.png", shell=True)
         # self.assertTrue(self.initialize())
         #while self.expedition_result(): time.sleep(3)
         # self.assertTrue(self.docking())
         # self.assertTrue(self.home())
-        self.adb_screenshot("capture.png")
+        # self.adb_screenshot("capture.png")
         #self.assertTrue(self.enable_pattern("attack_rack*"))
         #self.assertTrue(self.enable_pattern("attack_damage*"))
         #self.assertTrue(self.initialize())

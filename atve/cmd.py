@@ -9,6 +9,9 @@ from atve import STRING_SET
 from atve import PYTHON_VERSION
 from atve.exception import *
 
+if PYTHON_VERSION == 2:
+    FileNotFoundError = IOError
+
 class ThreadWithReturn(threading.Thread):
     def __init__(self, *args, **kwargs):
         super(ThreadWithReturn, self).__init__(*args, **kwargs)
@@ -21,6 +24,38 @@ class ThreadWithReturn(threading.Thread):
     def join(self, timeout=None):
         super(ThreadWithReturn, self).join(timeout=timeout)
         return self._return
+
+def run_ab(cmd, debug=False, shell=False):
+    if shell == False and type(cmd) in STRING_SET:
+        cmd = [c for c in cmd.split() if c != '']
+    if debug:
+        sys.stderr.write(''.join(cmd) + '\n')
+        sys.stderr.flush()
+    try:
+        subproc_args = { 'stdin'        : subprocess.PIPE,
+                         'stdout'       : subprocess.PIPE,
+                         'stderr'       : subprocess.STDOUT,
+                         'shell'        : shell }
+        try:
+            proc = subprocess.call(cmd, **subproc_args)
+        except FileNotFoundError as e:
+            out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
+            raise RunError(cmd, None, message='Raise Exception : %s' % out)
+        except Exception as e:
+            if proc != None: proc.kill()
+            out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
+            raise TimeoutError({
+                'cmd'       : cmd,
+                'out'       : None,
+                'message'   : 'command %s is time out' % cmd
+            })
+    except OSError as e:
+        out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
+        raise RunError(cmd, None, message='Raise Exception : %s' % out)
+
+    except RuntimeError as e:
+        out = "{0}: {1}\n{2}".format(type(e).__name__, e, traceback.format_exc())
+        raise RunError(cmd, None, message='Raise Exception : %s' % out)
 
 def run(cmd, cwd=None, timeout=60, debug=False, shell=False):
     if shell == False and type(cmd) in STRING_SET:

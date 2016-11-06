@@ -25,10 +25,21 @@ def test_cmd_run_failed_02():
     eq_(result[0], 1)
 
 @with_setup(setup, teardown)
+def test_cmd_run_ab_success_01():
+    result = cmd.run_ab('ls -la | wc -l')
+    eq_(result, None)
+
+@with_setup(setup, teardown)
 @timed(2.3)
 def test_cmd_run_sleep_success():
     result = cmd.run("sleep 2", timeout=5)
     eq_(result[0], 0)
+
+@with_setup(setup, teardown)
+@timed(2.3)
+def test_cmd_run_sleep_failed():
+    result = cmd.run_ab("sleep 2")
+    eq_(result, None)
 
 @with_setup(setup, teardown)
 @raises(TimeoutError)
