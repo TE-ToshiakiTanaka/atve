@@ -57,8 +57,9 @@ class TestCase_Unit(AtveTestCase):
         if conf == "":
             conf = os.path.join(SCRIPT_DIR, "config.ini")
         try:
-            config = configparser.ConfigParser()
-            config.read(conf)
+            config = configparser.RawConfigParser()
+            cfp = open(conf, 'r')
+            config.readfp(cfp)
             for section in config.sections():
                 for option in config.options(section):
                     cls.set("%s.%s" % (section, option), config.get(section, option))

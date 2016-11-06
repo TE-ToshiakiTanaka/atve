@@ -21,7 +21,7 @@ class TestCase_Base(testcase_android.TestCase_Android,
         self.adb.push_uiautomator(os.path.join(AUBS_JAR_DIR, "bin", self.adb.get().JAR_AUBS))
         """
 
-    def sleep(self, base=4):
+    def sleep(self, base=1):
         sleep_time = (0.5 + base * random.random())
         L.debug("sleep time : %s" % sleep_time)
         time.sleep(sleep_time)
@@ -102,11 +102,11 @@ class TestCase_Base(testcase_android.TestCase_Android,
         if not result == None: return result
         else: return None
 
-    def tap_timeout(self, reference, target=None, loop=5, timeout=5):
+    def tap_timeout(self, reference, target=None, loop=5, timeout=5, threshold=0.2):
         if not self.enable_timeout(reference, target, loop, timeout):
             return False
         target = self.adb.get().TMP_PICTURE
-        return self.tap(reference, target)
+        return self.tap(reference, target, threshold)
 
     def tap_timeout_crop(self, reference, point, filename=None, loop=5, timeout=5):
         if filename == None:
@@ -129,14 +129,14 @@ class TestCase_Base(testcase_android.TestCase_Android,
         else:
             return False
 
-    def tap(self, reference, target=None):
+    def tap(self, reference, target=None, threshold=0.2):
         if target == None:
             self.adb_screenshot(self.adb.get().TMP_PICTURE)
             target = self.adb.get().TMP_PICTURE
         result = self.picture_find_pattern(
             self.get_target(target), self.get_reference(reference))
         if not result == None:
-            L.info(self._tap(result))
+            L.info(self._tap(result, threshold))
             return True
         else:
             return False

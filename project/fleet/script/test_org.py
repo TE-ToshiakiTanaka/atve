@@ -18,9 +18,7 @@ class TestCase(testcase_normal.TestCase):
 
     def test_1(self):
         L.info("*** Test 01 ***")
-        run_ab("adb -s YT911C1ZCP shell screencap -p /sdcard/capture.png", shell=True)
-        run_ab("adb -s YT911C1ZCP pull /sdcard/capture.png %s" % TMP_DIR, shell=True)
-        run_ab("adb -s YT911C1ZCP rm /sdcard/capture.png", shell=True)
+        self.message(self.get("bot.expedition") % self.get("args.fleet"))
         # self.assertTrue(self.initialize())
         #while self.expedition_result(): time.sleep(3)
         # self.assertTrue(self.docking())

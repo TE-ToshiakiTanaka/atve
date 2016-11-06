@@ -98,14 +98,14 @@ class TestCase(testcase.TestCase_Base):
                   int(self.adb.get().DOCKING_WIDTH),
                   int(self.adb.get().DOCKING_HEIGHT))
         for _ in range(7):
-            L.info(p); self.sleep()
-            self._tap(p, threshold=0.49); time.sleep(5)
-            if self.enable_timeout("docking_unable.png", loop=3, timeout=1):
-                self.sleep(); self._tap(p, threshold=0.49); time.sleep(3)
-            elif self.tap_timeout("docking_start.png", loop=3, timeout=1):
-                self.sleep()
-                if self.tap_timeout("docking_yes.png", loop=3, timeout=1):
-                    time.sleep(10); return True
+            L.info(p); self.sleep(base=1)
+            self._tap(p, threshold=0.49); time.sleep(3)
+            if self.enable_timeout("docking_unable.png", loop=2, timeout=0.5):
+                self.sleep(base=1); self._tap(p, threshold=0.49); self.sleep(base=1)
+            elif self.tap_timeout("docking_start.png", loop=2, timeout=0.5):
+                self.sleep(base=1)
+                if self.tap_timeout("docking_yes.png", loop=2, timeout=0.5):
+                    self.sleep(base=3); return True
             if self.adb.get().LOCATE == "V":
                 p.x = int(p.x) - int(p.width)
                 if int(p.x) < 0: return False
@@ -137,10 +137,10 @@ class TestCase(testcase.TestCase_Base):
         return self.enable_timeout("attack_compass.png")
 
     def __attack_stage(self, id):
-        if int(id) > 24: self.tap_timeout("attack_stage_5.png"); time.sleep(1)
-        elif int(id) > 18: self.tap_timeout("attack_stage_4.png"); time.sleep(1)
-        elif int(id) > 12: self.tap_timeout("attack_stage_3.png"); time.sleep(1)
-        elif int(id) > 6: self.tap_timeout("attack_stage_2.png"); time.sleep(1)
+        if int(id) > 24: self.tap_timeout("attack_stage_5.png", threshold=0.49); time.sleep(1)
+        elif int(id) > 18: self.tap_timeout("attack_stage_4.png", threshold=0.49); time.sleep(1)
+        elif int(id) > 12: self.tap_timeout("attack_stage_3.png", threshold=0.49); time.sleep(1)
+        elif int(id) > 6: self.tap_timeout("attack_stage_2.png", threshold=0.49); time.sleep(1)
         else: pass
 
     def __attack_id(self, id):
@@ -164,14 +164,14 @@ class TestCase(testcase.TestCase_Base):
             if self.tap_timeout("night_battle_stop.png", target, loop=3, timeout=1):
                 self.sleep(); self.adb_screenshot(self.adb.get().TMP_PICTURE)
             time.sleep(10)
-        while self.tap_timeout("next.png", loop=3, timeout=2): time.sleep(5)
-        while not self.enable_timeout("attack_withdrawal.png", loop=3, timeout=2):
+        while self.tap_timeout("next.png", loop=3, timeout=2): self.sleep(base=2)
+        while not self.enable_timeout("attack_withdrawal.png", loop=3, timeout=0.5):
             if self.enable_timeout("return.png", loop=3, timeout=1):
                 fname = self.adb_screenshot("drop_%s.png" % self.adb.get().SERIAL)
                 if self.adb.get().LOCATE == "V":
                     self.picture_rotate(fname, "90")
                 self.picture_resize(fname, "480P"); self.upload(fname)
-                self.tap_timeout("return.png", loop=3, timeout=2)
+                self.tap_timeout("return.png", loop=3, timeout=0.5)
         self.tap_timeout("attack_withdrawal.png"); time.sleep(5)
         self.message(self.get("bot.attack_return"))
         return self.enable_timeout("home.png")
