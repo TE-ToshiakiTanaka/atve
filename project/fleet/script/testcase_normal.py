@@ -55,6 +55,30 @@ class TestCase(testcase.TestCase_Base):
         self.picture_resize(fname, "480P"); self.upload(fname)
         return self.home()
 
+    def supply_and_docking(self, fleet):
+        if not self.enable_timeout("home.png"):
+            return False
+        self.tap_timeout("action_supply.png"); self.sleep()
+        if not self.enable_timeout(self.__supply_fleet_focus(fleet), loop=2, timeout=2):
+            self.tap_timeout(self.__supply_fleet(fleet)); self.sleep()
+        self.message(self.get("bot.supply") % fleet)
+        self.tap_timeout("supply_all.png"); self.sleep()
+        self.tap_timeout("menu_docking.png"); self.sleep()
+        self.message(self.get("bot.docking"))
+        for _ in range(3):
+            position = self.find("docking_room.png")
+            if position == None: break
+            self.tap_timeout("docking_room.png", loop=2, timeout=1)
+            time.sleep(3); result = self.__docking()
+            self._tap(position, threshold=0.49)
+            self.sleep()
+            if not result: break
+        fname = self.adb_screenshot("docking_%s.png" % self.adb.get().SERIAL)
+        if self.adb.get().LOCATE == "V":
+            self.picture_rotate(fname, "90")
+        self.picture_resize(fname, "480P"); self.upload(fname)
+        return True
+
     def supply(self, fleet):
         if not self.enable_timeout("home.png"):
             return False
@@ -99,12 +123,12 @@ class TestCase(testcase.TestCase_Base):
                   int(self.adb.get().DOCKING_HEIGHT))
         for _ in range(7):
             L.info(p); self.sleep(base=1)
-            self._tap(p, threshold=0.49); time.sleep(3)
-            if self.enable_timeout("docking_unable.png", loop=2, timeout=0.5):
+            self._tap(p, threshold=0.49); self.sleep()
+            if self.enable_timeout("docking_unable.png", loop=1, timeout=0.5):
                 self.sleep(base=1); self._tap(p, threshold=0.49); self.sleep(base=1)
-            elif self.tap_timeout("docking_start.png", loop=2, timeout=0.5):
+            elif self.tap_timeout("docking_start.png", loop=1, timeout=0.5):
                 self.sleep(base=1)
-                if self.tap_timeout("docking_yes.png", loop=2, timeout=0.5):
+                if self.tap_timeout("docking_yes.png", loop=1, timeout=0.5):
                     self.sleep(base=3); return True
             if self.adb.get().LOCATE == "V":
                 p.x = int(p.x) - int(p.width)
@@ -122,7 +146,7 @@ class TestCase(testcase.TestCase_Base):
         self.__attack_stage(id)
         self.tap_timeout(self.__attack_id(id)); self.sleep()
         self.tap_timeout("attack_decide.png"); self.sleep()
-        if not self.enable_timeout(self.__attack_fleet_focus(fleet), loop=3, timeout=1):
+        if not self.enable_timeout(self.__attack_fleet_focus(fleet), loop=1, timeout=1):
             self.tap_timeout(self.__attack_fleet(fleet)); time.sleep(1)
         if self.enable_timeout("attack_unable.png", loop=2, timeout=1):
             self.message(self.get("bot.attack_failed"))
@@ -159,14 +183,14 @@ class TestCase(testcase.TestCase_Base):
         self.tap_timeout("attack_compass.png")
         while not self.enable_timeout("next.png", loop=3, timeout=2):
             target = self.adb.get().TMP_PICTURE
-            if self.tap_timeout("attack_formation_1.png", target, loop=3, timeout=1):
+            if self.tap_timeout("attack_formation_1.png", target, loop=3, timeout=0.5):
                 self.sleep(); self.adb_screenshot(self.adb.get().TMP_PICTURE)
-            if self.tap_timeout("night_battle_stop.png", target, loop=3, timeout=1):
+            if self.tap_timeout("night_battle_stop.png", target, loop=3, timeout=0.5):
                 self.sleep(); self.adb_screenshot(self.adb.get().TMP_PICTURE)
             time.sleep(10)
-        while self.tap_timeout("next.png", loop=3, timeout=2): self.sleep(base=2)
+        while self.tap_timeout("next.png", loop=3, timeout=0.5): self.sleep(base=2)
         while not self.enable_timeout("attack_withdrawal.png", loop=3, timeout=0.5):
-            if self.enable_timeout("return.png", loop=3, timeout=1):
+            if self.enable_timeout("return.png", loop=3, timeout=0.5):
                 fname = self.adb_screenshot("drop_%s.png" % self.adb.get().SERIAL)
                 if self.adb.get().LOCATE == "V":
                     self.picture_rotate(fname, "90")

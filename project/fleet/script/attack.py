@@ -18,17 +18,14 @@ class TestCase(testcase_normal.TestCase):
         L.info("*** Exercises ***")
 
         self.assertTrue(self.initialize(self.get("args.deploy")))
-        while self.expedition_result(): time.sleep(3)
+        while self.expedition_result(): time.sleep(2)
         self.message(self.get("bot.attack"))
         self.assertTrue(self.attack(self.get("args.fleet"), self.get("args.attack")))
         self.assertTrue(self.battle())
-        while self.expedition_result(): time.sleep(3)
-        self.assertTrue(self.supply(self.get("args.fleet")))
+        while self.expedition_result(): time.sleep(2)
+        self.assertTrue(self.supply_and_docking(self.get("args.fleet")))
         self.assertTrue(self.home())
-        while self.expedition_result(): time.sleep(3)
-        self.assertTrue(self.docking())
-        self.assertTrue(self.home())
-        while self.expedition_result(): time.sleep(3)
+        while self.expedition_result(): time.sleep(2)
 
 
     @classmethod

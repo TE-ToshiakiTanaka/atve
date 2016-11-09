@@ -18,7 +18,7 @@ class TestCase(testcase_normal.TestCase):
 
     def test_1(self):
         L.info("*** Test 01 ***")
-        self.message(self.get("bot.expedition") % self.get("args.fleet"))
+        self.supply_and_docking(self.get("args.fleet"))
         # self.assertTrue(self.initialize())
         #while self.expedition_result(): time.sleep(3)
         # self.assertTrue(self.docking())
