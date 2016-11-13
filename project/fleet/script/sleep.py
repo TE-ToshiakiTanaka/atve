@@ -23,9 +23,13 @@ class TestCase(testcase_normal.TestCase):
             username = self.get("args.userid")
             token = self.get("args.password")
 
-            url = "%s/job/%s/api/json" % (self.get("args.url"), self.get("args.job"))
+            url = "%s/job/%s/api/json?token=%s" % (self.get("args.url"), self.get("args.job"), self.get("args.job"))
             L.info(url)
-            r = urllib2.urlopen(url)
+            request = urllib2.Request(url)
+            base64string = base64.encodestring('%s:%s' % (username, token)).replace('\n', '')
+            request.add_header("Authorization", "Basic %s" % base64string)
+
+            r = urllib2.urlopen(request)
             root = json.loads(r.read())
             latest = int(root['lastBuild']['number'])
             success = int(root['lastStableBuild']['number'])
@@ -44,11 +48,11 @@ class TestCase(testcase_normal.TestCase):
             url2 = "%s/job/%s/build?token=%s&delay=0sec" % (self.get("args.url"), self.get("args.job"), self.get("args.job"))
             L.info(url2)
 
-            request = urllib2.Request(url2)
-            base64string = base64.encodestring('%s:%s' % (username, token)).replace('\n', '')
-            request.add_header("Authorization", "Basic %s" % base64string)
+            request2 = urllib2.Request(url2)
+            base64string2 = base64.encodestring('%s:%s' % (username, token)).replace('\n', '')
+            request2.add_header("Authorization", "Basic %s" % base64string2)
 
-            r2 = urllib2.urlopen(request)
+            r2 = urllib2.urlopen(request2)
             L.debug("HTTP Status Code : %d" % r2.getcode())
             self.assertTrue(r2.getcode() == 201)
         finally:
