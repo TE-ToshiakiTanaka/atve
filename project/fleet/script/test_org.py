@@ -18,12 +18,12 @@ class TestCase(testcase_normal.TestCase):
 
     def test_1(self):
         L.info("*** Test 01 ***")
-        self.supply_and_docking(self.get("args.fleet"))
+        # self.supply_and_docking(self.get("args.fleet"))
         # self.assertTrue(self.initialize())
         #while self.expedition_result(): time.sleep(3)
         # self.assertTrue(self.docking())
         # self.assertTrue(self.home())
-        # self.adb_screenshot("capture.png")
+        self.adb_screenshot("capture.png")
         #self.assertTrue(self.enable_pattern("attack_rack*"))
         #self.assertTrue(self.enable_pattern("attack_damage*"))
         #self.assertTrue(self.initialize())
