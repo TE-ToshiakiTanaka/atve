@@ -4,6 +4,8 @@ import time
 import fnmatch
 import random
 
+from atve.exception import *
+
 from fleet.script import testcase_android
 from fleet.script import testcase_picture
 from fleet.utility import *
