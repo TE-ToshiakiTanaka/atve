@@ -151,7 +151,13 @@ class TestCase_Base(testcase_android.TestCase_Android,
         return self.adb_tap(x, y)
 
     def message(self, message):
-        self.slack.message(message, self.get("args.channel"))
+        try:
+            self.slack.message(message, self.get("args.channel"))
+        except SlackError as e:
+            L.warning(str(e))
 
     def upload(self, filepath):
-        self.slack.upload(filepath, self.get("args.channel"))
+        try:
+            self.slack.upload(filepath, self.get("args.channel"))
+        except SlackError as e:
+            L.warning(str(e))
