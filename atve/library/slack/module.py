@@ -32,7 +32,7 @@ class Slack(object):
                 raise SlackError(result.error)
         except Exception as e:
             L.warning(str(e))
-            raise SlackError("%s is not exists." % token)
+            raise SlackError("%s is not exists." % channels)
 
 
     def upload(self, filepath, channels,
